@@ -1,0 +1,16 @@
+[
+  {
+    "id": "sched_1771996764356",
+    "text": "Hello",
+    "scheduleTime": "2026-02-25T17:10",
+    "status": "cancelled",
+    "createdAt": "2026-02-25T05:19:24.356Z"
+  },
+  {
+    "id": "sched_1772015632882",
+    "text": "Hello Everyone",
+    "scheduleTime": "2026-02-26 17:00",
+    "status": "cancelled",
+    "createdAt": "2026-02-25T10:33:52.882Z"
+  }
+]

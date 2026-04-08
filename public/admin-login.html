@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Butler Admin Login</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: var(--royal-ivory);
+            color: var(--text-dark);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid var(--royal-gold-muted);
+        }
+
+        h2 {
+            color: var(--royal-gold-dark);
+            margin-bottom: 30px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+            background: var(--royal-ivory-light);
+            border: 1px solid var(--royal-gold-muted);
+            border-radius: 10px;
+            color: var(--text-dark);
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: var(--royal-gold);
+            box-shadow: 0 0 0 3px rgba(197, 160, 40, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--royal-gold), var(--royal-gold-dark));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        #error-msg {
+            color: #d03e3e;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-card">
+        <h2>Wedding Butler Admin Panel</h2>
+        <div id="error-msg">Invalid username or password</div>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+
+            const res = await fetch('/api/admin-login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                window.location.href = '/admin.html';
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>

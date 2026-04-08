@@ -1,0 +1,46 @@
+{
+  "config": {
+    "hostName": "Akshay & Priya",
+    "groomName": "Akshay",
+    "brideName": "Priya",
+    "weddingHashtag": "#AkshayPriyaWedding"
+  },
+  "events": [
+    {
+      "id": "evt_mehendi",
+      "name": "Mehendi",
+      "type": "mehendi",
+      "date": "18 May 2026",
+      "time": "12:00 PM",
+      "location": "Royal Pepper Resort",
+      "description": "Mehendi ceremony. Dress code: Green / Yellow."
+    },
+    {
+      "id": "evt_sangeet",
+      "name": "Sangeet",
+      "type": "sangeet",
+      "date": "18 May 2026",
+      "time": "7:00 PM",
+      "location": "Royal Pepper Resort",
+      "description": "Music, dance & performances."
+    },
+    {
+      "id": "evt_haldi",
+      "name": "Haldi",
+      "type": "haldi",
+      "date": "19 May 2026",
+      "time": "11:30 AM",
+      "location": "Royal Pepper Resort",
+      "description": "Traditional haldi ceremony."
+    },
+    {
+      "id": "evt_shaadi",
+      "name": "Wedding",
+      "type": "shaadi",
+      "date": "19 May 2026",
+      "time": "8:00 PM",
+      "location": "Royal Pepper Resort",
+      "description": "The main wedding ceremony."
+    }
+  ]
+}

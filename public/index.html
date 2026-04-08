@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding Butler - AI Wedding Coordinator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#c5a028">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+</head>
+
+<body>
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen">
+        <div class="login-container">
+            <h1 style="color: var(--royal-gold-dark); margin-bottom: 20px;">The Wedding Butler 🌸</h1>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Wedding Assistant for {{HOST_NAME}}</p>
+
+            <!-- Step 1: Phone -->
+            <div id="step-phone">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <div
+                        style="background: var(--royal-ivory-light); padding: 15px; border-radius: 10px; border: 1px solid var(--royal-gold-muted); font-weight: bold; color: var(--text-dark);">
+                        +91</div>
+                    <input type="text" id="phone-input" placeholder="Enter Mobile Number"
+                        style="flex: 1; padding: 15px; border: 1px solid var(--royal-gold-muted); border-radius: 10px; font-size: 16px; background: var(--royal-ivory-light); color: var(--text-dark);">
+                </div>
+                <!-- Error Message Container -->
+                <p id="login-error" style="color: red; font-size: 12px; display: none; margin-bottom: 10px;"></p>
+                
+                <button class="btn" onclick="requestOtp()" style="width: 100%;">Get OTP via WhatsApp</button>
+                
+                <div style="display: flex; align-items: center; margin: 20px 0; color: var(--text-muted); font-size: 12px; gap: 10px;">
+                    <div style="flex: 1; height: 1px; background: var(--royal-gold-muted); opacity: 0.3;"></div>
+                    OR
+                    <div style="flex: 1; height: 1px; background: var(--royal-gold-muted); opacity: 0.3;"></div>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <input type="password" id="password-input" placeholder="Enter Password"
+                        style="width: 100%; padding: 15px; border: 1px solid var(--royal-gold-muted); border-radius: 10px; font-size: 16px; background: var(--royal-ivory-light); color: var(--text-dark);">
+                </div>
+                <button class="btn btn-secondary" onclick="loginWithPassword()" style="width: 100%; background: transparent; border: 2px solid var(--royal-gold); color: var(--royal-gold); font-weight: bold;">Login with Password</button>
+
+                <p style="margin-top: 15px; font-size: 13px; color: var(--text-muted);">
+                    Not on the list? <span onclick="openRegistration()"
+                        style="color: var(--royal-gold-dark); cursor: pointer; font-weight: bold; text-decoration: underline;">Request
+                        Access</span>
+                </p>
+            </div>
+
+            <!-- Step 2: OTP -->
+            <div id="step-otp" class="hidden">
+                <!-- Mock OTP Display -->
+                <div
+                    style="background: #e8f5e9; padding: 10px; border-radius: 8px; margin-bottom: 20px; border: 1px dashed #4caf50;">
+                    <p style="font-size: 14px; color: #2e7d32; margin: 0;"><b>OTP Received:</b> <span
+                            id="mock-otp-display">---</span></p>
+                </div>
+
+                <input type="text" id="otp-input" placeholder="Enter OTP"
+                    style="width: 100%; padding: 15px; border: 1px solid var(--royal-gold-muted); border-radius: 10px; font-size: 16px; background: var(--royal-ivory-light); color: var(--text-dark);">
+                <button class="btn" onclick="verifyOtp()" style="width: 100%; margin-top: 20px;">Login</button>
+                <p style="margin-top:10px; font-size:12px; color:blue; cursor:pointer;" onclick="location.reload()">Back
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHAT APP (Normally hidden) -->
+    <div id="app-container" class="hidden" style="width:100%; max-width:480px; margin:0 auto; height:100vh;">
+
+        <div class="main-chat" style="height: 100%;">
+            <div class="header">
+                <div class="profile-pic"
+                    style="background: url('https://cdn-icons-png.flaticon.com/512/4712/4712035.png'); background-size: cover;">
+                </div>
+                <div class="chat-title">
+                    <span id="chat-header-name">The Wedding Butler</span>
+                    <button onclick="openRSVPModal()" id="rsvp-btn" style="font-size: 10px; background: var(--royal-gold); color: white; border: none; padding: 4px 10px; border-radius: 20px; cursor: pointer; font-weight: 700;">Confirm RSVP</button>
+                    <div style="font-size: 0.8rem; opacity: 0.8;" id="header-hashtag">{{WEDDING_HASHTAG}}</div>
+                </div>
+                <div class="header-actions">
+                    <button onclick="requestEmergencyContact()" class="sos-btn">SOS</button>
+                    <!-- 3-dot Menu Button -->
+                    <div class="menu-container">
+                        <button onclick="toggleMenu()" class="menu-btn">
+                            <ion-icon name="ellipsis-vertical"></ion-icon>
+                        </button>
+                        <div id="dropdown-menu" class="dropdown-content hidden">
+                            <a href="#" onclick="clearChat(event)">Clear Chat</a>
+                            <a href="#" onclick="logout()">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SELECTION HEADER (Hidden by default) -->
+            <div id="selection-header" class="header selection-mode hidden" style="background: #008069; color: white;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <button onclick="exitSelectionMode()"
+                        style="background:none; border:none; color:white; font-size:24px; cursor:pointer; display:flex;">
+                        <ion-icon name="arrow-back"></ion-icon>
+                    </button>
+                    <span id="selection-count" style="font-weight: 500; font-size: 18px;">1 selected</span>
+                </div>
+                <div class="header-actions">
+                    <button onclick="deleteSelectedMessages()" class="delete-btn"
+                        style="background:none; border:none; color:white; font-size:24px; cursor:pointer; display:flex;">
+                        <ion-icon name="trash-outline"></ion-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="messages" id="message-box">
+                <!-- Chat bubbles go here -->
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="msg-input" placeholder="Ask about events, venue, timings..."
+                    onkeypress="handleEnter(event)">
+                <button class="btn" onclick="sendMessage()" style="margin-top: 0; width: 50px;"><ion-icon
+                        name="send"></ion-icon></button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- REGISTRATION MODAL -->
+    <div id="registration-modal" class="hidden"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; background: var(--glass-bg); backdrop-filter: blur(8px); z-index:1000; display:none; align-items:center; justify-content:center; padding: 20px;">
+        <div class="login-container" style="max-width: 450px;">
+            <h2 style="color: var(--royal-gold-dark); margin-bottom: 20px;">Request Access 🌸</h2>
+            <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 25px;">Please provide your details for
+                admin
+                approval.</p>
+
+            <input type="text" id="reg-name" placeholder="Full Name"
+                style="width: 100%; padding: 15px; border: 1px solid var(--royal-gold-muted); border-radius: 12px; margin-bottom: 15px; outline: none; background: var(--royal-ivory-light); color: var(--text-dark);">
+            <input type="text" id="reg-phone" placeholder="Phone Number"
+                style="width: 100%; padding: 15px; border: 1px solid var(--royal-gold-muted); border-radius: 12px; margin-bottom: 15px; outline: none; background: var(--royal-ivory-light); color: var(--text-dark);">
+            <input type="text" id="reg-relation" placeholder="Relation (e.g. Groom's Brother)"
+                style="width: 100%; padding: 15px; border: 1px solid var(--royal-gold-muted); border-radius: 12px; margin-bottom: 15px; outline: none; background: var(--royal-ivory-light); color: var(--text-dark);">
+
+            <label
+                style="display: block; text-align: left; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; margin-left: 5px;">Category</label>
+            <select id="reg-category"
+                style="width: 100%; padding: 15px; border: 1px solid var(--royal-gold-muted); border-radius: 12px; margin-bottom: 25px; font-size: 14px; background: var(--royal-ivory-light); color: var(--text-dark); outline: none;">
+                <option value="friend">Friend</option>
+                <option value="elder">Elder / Family</option>
+                <option value="sibling">Cousin / Sibling</option>
+            </select>
+
+            <button class="btn" onclick="submitRegistration()" style="width: 100%; margin-bottom: 12px;">Submit
+                Request</button>
+            <button onclick="closeRegistration()"
+                style="width: 100%; background: transparent; color: var(--text-muted); border: none; font-size: 13px; cursor: pointer;">Cancel</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+
+    <!-- B12: Guest RSVP Modal -->
+    <div id="rsvp-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; display:flex; align-items:center; justify-content:center;">
+        <div style="background:white; padding:25px; border-radius:15px; width:400px; max-width:90%;">
+            <h3 style="font-family:'Playfair Display', serif; margin-top:0;">Confirm Your Status 🙏</h3>
+            <div style="margin-bottom:15px;">
+                <label style="display:block; font-weight:600; font-size:14px; margin-bottom:5px;">Attending?</label>
+                <select id="rsvp-attendance" style="width:100%; padding:8px; border-radius:6px; border:1px solid var(--royal-gold-muted);">
+                    <option value="yes">Yes, I'm coming! ✅</option>
+                    <option value="no">No, I can't make it ❌</option>
+                </select>
+            </div>
+            <div style="margin-bottom:20px;">
+                <label style="display:block; font-weight:600; font-size:14px; margin-bottom:5px;">Food Preference?</label>
+                <select id="rsvp-food" style="width:100%; padding:8px; border-radius:6px; border:1px solid var(--royal-gold-muted);">
+                    <option value="Vegetarian">Pure Vegetarian 🥦</option>
+                    <option value="Non-Vegetarian">Non-Vegetarian 🍗</option>
+                    <option value="Jain">Jain Food 🍽️</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn" onclick="submitRSVP()" style="flex:1;">Submit RSVP</button>
+                <button class="btn btn-secondary" onclick="closeRSVPModal()" style="flex:1;">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Butler Service Worker registered ✅'))
+                    .catch(err => console.log('Butler Service Worker failed ❌', err));
+            });
+        }
+    </script>
+</body>
+
+</html>

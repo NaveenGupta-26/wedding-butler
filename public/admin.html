@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Butler Admin - Host Control</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Flatpickr for premium date/time picking -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_orange.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+</head>
+
+<body>
+
+    <div class="admin-header">
+        <h2 style="margin:0; font-family: 'Playfair Display', serif; color: var(--royal-gold-dark);">Wedding Butler
+            Admin</h2>
+        <button onclick="handleLogout()"
+            style="background: rgba(197, 160, 40, 0.15); border: 1.5px solid var(--royal-gold); color: var(--royal-gold-dark); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 700; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">Logout</button>
+    </div>
+
+    <div class="admin-layout">
+        <!-- COL 1: Guest List -->
+        <div class="col-guests" id="guest-list">
+            <div
+                style="padding: 15px; border-bottom: 2px solid var(--royal-ivory); font-weight: 700; color: var(--royal-gold-dark);">
+                Guest List
+            </div>
+            <div style="padding: 10px; border-bottom: 1px solid var(--royal-ivory);">
+                <input type="text" id="guest-search" placeholder="Search guests..." 
+                    style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--royal-gold-muted); font-size: 13px;">
+            </div>
+            <div style="text-align: center; margin-top: 20px;">Loading...</div>
+        </div>
+
+        <!-- COL 2: Chat Monitor -->
+        <div class="col-chat">
+            <div class="chat-header">
+                <span id="active-guest-name">Select a Guest to View Chat</span>
+                <button id="clear-chat-btn" onclick="clearCurrentChat()" style="display:none;">
+                    Clear Chat
+                </button>
+            </div>
+            <div class="messages" id="admin-chat-box"></div>
+            <div class="input-area">
+                <input type="text" id="admin-msg-input" placeholder="Reply directly as Host..."
+                    onkeypress="handleAdminEnter(event)">
+                <button class="btn" onclick="sendAdminReply()">Reply</button>
+            </div>
+        </div>
+
+        <!-- COL 3: Tools -->
+        <div class="col-tools">
+
+            <!-- System Settings -->
+            <div class="tool-card">
+                <div class="tool-title"><ion-icon name="settings-outline"></ion-icon> System Settings</div>
+                <div class="form-group">
+                    <label class="form-label">Host SOS Number</label>
+                    <input type="text" id="config-sos-phone" placeholder="+91...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Host Name</label>
+                    <input type="text" id="config-sos-name" placeholder="Host Name">
+                </div>
+                <button class="btn" onclick="saveSystemSettings()" style="width: 100%;">Save Settings</button>
+            </div>
+
+            <!-- WhatsApp Connection -->
+            <div class="tool-card" id="whatsapp-card" style="text-align: center;">
+                <div class="tool-title"><ion-icon name="logo-whatsapp"></ion-icon> WhatsApp Butler</div>
+                <div id="qr-container"
+                    style="background: white; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                    <p style="color: #666; font-size: 12px; margin-bottom: 5px;">Waiting for QR...</p>
+                    <img id="qr-img" style="width: 100%; display: none;" src="" alt="WhatsApp QR">
+                </div>
+                <p id="whatsapp-status" style="font-size: 11px; color: #aaa;">Status: Initializing...</p>
+                <button class="btn" onclick="reconnectWhatsApp()" style="width: 100%; margin-top: 10px; background: #25d366; border: none;">Reconnect WhatsApp</button>
+            </div>
+
+            <!-- B5/B6: Admin Analytics -->
+            <div class="tool-card">
+                <div class="tool-title"><ion-icon name="stats-chart-outline"></ion-icon> Dashboard Analytics</div>
+                <div id="analytics-content" style="font-size: 13px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>Total Guests:</span>
+                        <b id="stat-total-guests">0</b>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>Active Chats:</span>
+                        <b id="stat-active-chats">0</b>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>Urgent Cases:</span>
+                        <b id="stat-urgent-cases" style="color: red;">0</b>
+                    </div>
+                </div>
+                <button class="btn" onclick="refreshAnalytics()" style="width: 100%; margin-top: 10px;">Refresh Stats</button>
+            </div>
+
+            <!-- Add Guest -->
+            <div class="tool-card">
+                <div class="tool-title"><ion-icon name="person-add"></ion-icon> Add New Guest</div>
+                <input type="text" id="new-guest-name" placeholder="Name (e.g. Raju Mama)">
+                <input type="text" id="new-guest-phone" placeholder="Phone (+91...)">
+                <input type="text" id="new-guest-relation" placeholder="Relation (Uncle/Friend)">
+
+                <div class="form-group">
+                    <label class="form-label">Guest Side</label>
+                    <select id="new-guest-side">
+                        <option value="Groom">Groom's Side</option>
+                        <option value="Bride">Bride's Side</option>
+                    </select>
+                </div>
+
+                <input type="text" id="new-guest-hotel" placeholder="Hotel (e.g. Royal Pepper Resort)">
+
+                <label
+                    style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-size: 14px; cursor: pointer;">
+                    <input type="checkbox" id="new-guest-vip" style="width: 20px; height: 20px; margin: 0;">
+                    <span style="font-weight: 600; color: var(--royal-gold);">VIP Guest ⭐</span>
+                </label>
+
+                <button class="btn" onclick="addNewGuest()" style="width: 100%;">Add to List</button>
+            </div>
+
+            <!-- Registration Requests -->
+            <div class="tool-card" id="registration-requests-card" style="display: none;">
+                <div class="tool-title"><ion-icon name="person-outline"></ion-icon> Registration Requests</div>
+                <div id="registration-requests-list"></div>
+            </div>
+
+            <!-- Proactive Butler Card -->
+            <div class="tool-card">
+                <div class="tool-title"><ion-icon name="sparkles"></ion-icon> Proactive Butler</div>
+
+                <div class="form-group">
+                    <label class="form-label">Butler Mode</label>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-secondary" onclick="setButlerMode('manual')" id="mode-manual"
+                            style="flex:1; padding: 10px; font-size: 12px;">Manual</button>
+                        <button class="btn btn-secondary" onclick="setButlerMode('hybrid')" id="mode-hybrid"
+                            style="flex:1; padding: 10px; font-size: 12px;">Hybrid</button>
+                        <button class="btn btn-secondary" onclick="setButlerMode('auto')" id="mode-auto"
+                            style="flex:1; padding: 10px; font-size: 12px;">Auto</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Engagement Intensity</label>
+                    <select id="engagement-intensity">
+                        <option value="low">Low (Conservative)</option>
+                        <option value="medium" selected>Medium (Standard)</option>
+                        <option value="high">High (Proactive)</option>
+                    </select>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                    <button class="btn btn-secondary" onclick="triggerProactive('welcome')">👋 Welcome</button>
+                    <button class="btn btn-secondary" onclick="triggerProactive('comfort_check')">🛌 Comfort</button>
+                    <button class="btn btn-secondary" onclick="triggerProactive('pickup_reminder')">🚐 Pickup</button>
+                    <button class="btn btn-secondary" onclick="triggerProactive('event_start')">✨ Starting</button>
+                </div>
+
+                <button class="btn btn-danger" onclick="killButler()" style="width: 100%; margin-bottom: 8px;">🚨
+                    DISABLE BUTLER</button>
+                <p style="font-size: 11px; color: var(--text-muted); text-align: center; font-style: italic;">Stops all
+                    proactive features immediately.</p>
+            </div>
+
+            </div>
+
+            <!-- B13: Knowledge Base Manager -->
+            <div class="tool-card">
+                <div class="tool-title"><ion-icon name="book-outline"></ion-icon> Knowledge Base Manager</div>
+                <div style="margin-bottom: 10px;">
+                    <input type="text" id="kb-search" placeholder="Search facts..." oninput="searchKB()" style="width: 100%; margin-bottom: 8px; font-size: 13px;">
+                    <div id="kb-list" style="max-height: 200px; overflow-y: auto; background: var(--royal-ivory); padding: 8px; border-radius: 8px; font-size: 11px;">
+                        Loading facts...
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="openAddKBModal()" style="width: 100%;">+ Add New Fact</button>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="tool-card" style="border: 1px solid #ffccd2;">
+                <div class="tool-title" style="color: #d03e3e;"><ion-icon name="warning-outline"></ion-icon> Danger Zone
+                </div>
+                <button class="btn" onclick="clearAllChats()" style="width: 100%; background: #d03e3e;">Clear All Chat
+                    History</button>
+                <p style="font-size: 10px; color: #999; margin-top: 8px; text-align: center;">This will permanently
+                    delete all messages for all guests.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Guest Right Click Context Menu -->
+    <div id="guestContextMenu" style="
+        position:absolute;
+        display:none;
+        background: var(--card-bg);
+        border:1px solid #333;
+        border-radius:6px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.4);
+        z-index:9999;
+        width:160px;
+    ">
+        <div id="ctx-edit" style="padding:10px;color:#ccc;cursor:pointer;">
+            ✏️ Update Guest
+        </div>
+        <div id="ctx-delete" style="padding:10px;color:#ff6b6b;cursor:pointer;">
+            🗑️ Delete Guest
+        </div>
+    </div>
+
+    <!-- Update Guest Modal -->
+    <div id="updateGuestModal" style="
+    display:none;
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.6);
+    z-index:10000;
+">
+        <div style="
+      background: var(--card-bg);
+      width:350px;
+      margin:100px auto;
+      padding:20px;
+      border-radius:8px;
+  ">
+            <h3 style="color:#00a884;margin-bottom:10px;">Update Guest</h3>
+
+            <input id="upd-name" placeholder="Name">
+            <input id="upd-phone" placeholder="Phone">
+            <input id="upd-relation" placeholder="Relation">
+            <input id="upd-category" placeholder="Category (elder/friend/sibling)">
+            <select id="upd-side"
+                style="width: 100%; padding: 12px; margin-bottom: 18px; border-radius: 8px; border: 1px solid var(--royal-gold-muted); background: var(--royal-ivory-light); color: var(--text-dark);">
+                <option value="Groom">Groom's Side</option>
+                <option value="Bride">Bride's Side</option>
+            </select>
+            <input id="upd-hotel" placeholder="Hotel">
+            <label
+                style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px; font-size: 14px; color: var(--text-dark);">
+                <input type="checkbox" id="upd-vip" style="width: auto; margin-bottom: 0;"> VIP Guest
+            </label>
+
+            <button class="btn" onclick="saveGuestUpdate()">Save</button>
+            <button class="btn" style="background:#444" onclick="closeUpdateModal()">Cancel</button>
+        </div>
+    </div>
+
+
+    </div>
+
+    <!-- Notification Sound -->
+    <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2354/2354-preview.mp3"></audio>
+
+    <!-- Add KB Modal -->
+    <div id="kb-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; display:flex; align-items:center; justify-content:center;">
+        <div style="background:white; padding:25px; border-radius:15px; width:400px; max-width:90%;">
+            <h3 style="font-family:'Playfair Display', serif; margin-top:0;">Add New Fact</h3>
+            <textarea id="kb-text-input" rows="4" placeholder="e.g. Wedding starts at 8 PM at Royal Pepper Resort..." style="width:100%; margin-bottom:15px;"></textarea>
+            <div style="display:flex; gap:10px;">
+                <button class="btn" onclick="saveKBFact()" style="flex:1;">Save Fact</button>
+                <button class="btn btn-secondary" onclick="closeKBModal()" style="flex:1;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>

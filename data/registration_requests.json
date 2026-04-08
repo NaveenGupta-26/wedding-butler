@@ -1,0 +1,20 @@
+[
+  {
+    "id": "reg_1771997808529",
+    "name": "Rohit",
+    "phone": "+919351193566",
+    "relation": "Bride's Brother",
+    "category": "sibling",
+    "status": "approved",
+    "timestamp": "2026-02-25T05:36:48.529Z"
+  },
+  {
+    "id": "reg_1771997824507",
+    "name": "Test Guest",
+    "phone": "+919999999999",
+    "relation": "Tester",
+    "category": "friend",
+    "status": "pending",
+    "timestamp": "2026-02-25T05:37:04.507Z"
+  }
+]

@@ -1,0 +1,2179 @@
+[
+  {
+    "id": "welcome_help",
+    "keywords": [
+      "help",
+      "madad",
+      "assist"
+    ],
+    "answers": {
+      "default": "Of course! I’m here to make your wedding experience smooth 😊 Ask me anything!",
+      "elder": "Namaste! I’m here to assist you with anything you need for the wedding 😊",
+      "friend": "Of course! Wedding concierge at your service 😄 Bol kya chahiye?",
+      "sibling": "Haan boss, wedding control room yahi hai 😂 Bol kya chahiye?"
+    }
+  },
+  {
+    "id": "venue_location",
+    "category": "Venue",
+    "keywords": [
+      "venue",
+      "location",
+      "address",
+      "kahan",
+      "jagah",
+      "shaadi kaha"
+    ],
+    "answers": {
+      "default": "All wedding events are happening at Royal Pepper Resort, NH-8. Link: https://maps.app.goo.gl/vsnjMmxCAXKDZXd58",
+      "elder": "Sabhi karyakram Royal Pepper Resort, NH-8 par aayojit kiye gaye hain. Location: https://maps.app.goo.gl/vsnjMmxCAXKDZXd58",
+      "friend": "Venue scene is Royal Pepper Resort, NH-8. Google Maps: https://maps.app.goo.gl/vsnjMmxCAXKDZXd58 📍",
+      "sibling": "Royal Pepper Resort, NH-8. Galat jagah mat pahunch jana 😄 Link: https://maps.app.goo.gl/vsnjMmxCAXKDZXd58"
+    }
+  },
+  {
+    "id": "gps_maps",
+    "keywords": [
+      "gps",
+      "maps",
+      "link",
+      "rasta",
+      "navigation",
+      "direction",
+      "google map"
+    ],
+    "answers": {
+      "default": "Here is the GPS location for Royal Pepper Resort: https://maps.app.goo.gl/RoyalPepperResort 📍 See you there!",
+      "elder": "Resort ka map link yeh raha: https://maps.app.goo.gl/RoyalPepperResort 🙏 Isse aapko rasta mil jayega.",
+      "friend": "Ye le Google Maps link: https://maps.app.goo.gl/RoyalPepperResort 📍 Thok ke gaadi chala!",
+      "sibling": "Location pinned! 📍 https://maps.app.goo.gl/RoyalPepperResort Bas map follow kar le."
+    }
+  },
+  {
+    "id": "chit_chat_vibe",
+    "keywords": [
+      "badiya",
+      "kaise ho",
+      "sab thik",
+      "vibe"
+    ],
+    "answers": {
+      "default": "Everything is going great! The wedding energy is amazing. 😄",
+      "elder": "Sab bahut badhiya chal raha hai 🙏 Aap batayein?",
+      "friend": "Ekdum mast! Full vibe chal rahi hai. 😄",
+      "sibling": "Zabardast! System phaad rakha hai 😂"
+    }
+  },
+  {
+    "id": "water_issue",
+    "keywords": [
+      "pani",
+      "water",
+      "bathroom",
+      "nal",
+      "tap",
+      "shower"
+    ],
+    "answers": {
+      "default": "I'm sorry to hear that. I've alerted the maintenance team to check the water supply in your room immediately. 🙏",
+      "elder": "Kshama karein, paani ki samasya ke liye team ko suchit kar diya gaya hai. Jaldi thik ho jayega. 😊",
+      "friend": "Oops, sorry! Plumbing team ko bol diya hai, abhi aate honge room pe. 🛠️",
+      "sibling": "Abhi check karwa raha hoon, tension mat le! Team on the way hai. 😂"
+    }
+  },
+  {
+    "id": "bride_groom_info",
+    "keywords": [
+      "ladka",
+      "ladki",
+      "bride",
+      "groom",
+      "couple",
+      "akshay",
+      "priya",
+      "dulha",
+      "dulhan",
+      "groom name",
+      "bride name",
+      "whose wedding",
+      "kiski shadi"
+    ],
+    "answers": {
+      "default": "The wedding is of Akshay & Priya! 💑 Akshay is the Groom and Priya is the Bride.",
+      "elder": "Dulha Akshay aur Dulhan Priya hain. Dono ko aapka aashirwad chahiye. 😊",
+      "friend": "Akshay and Priya are getting married! Akshay is our Groom and Priya is the Bride. 💫",
+      "sibling": "Akshay bhai and Priya bhabhi! Full power couple 😂"
+    }
+  },
+  {
+    "id": "schedule_full",
+    "keywords": [
+      "schedule",
+      "program list",
+      "itinerary"
+    ],
+    "answers": {
+      "default": "Everything is beautifully planned 😊 Aap jis event ka poochna chahte ho, batao!",
+      "elder": "Poora schedule thoughtfully planned hai 😊 Aap kisi bhi event ka time pooch sakte hain.",
+      "friend": "Full wedding calendar set hai 😄 Kaunsa event target kar rahe ho?",
+      "sibling": "Sab timetable pe chal raha hai 😂 Bas late mat hona!"
+    }
+  },
+  {
+    "id": "early_arrival",
+    "keywords": [
+      "jaldi aa gaye",
+      "early"
+    ],
+    "answers": {
+      "default": "Wow, perfect timing 😊 Relax, enjoy the décor and vibe!",
+      "elder": "Aapka swagat hai 😊 Aap aaram se baith kar enjoy karein.",
+      "friend": "Early bird gets the best selfies 😄",
+      "sibling": "Itni jaldi? Planning team join kar le 😂"
+    }
+  },
+  {
+    "id": "late_arrival",
+    "keywords": [
+      "late ho gaya",
+      "der ho gayi"
+    ],
+    "answers": {
+      "default": "No worries at all 😊 Shaadi mein thoda flexible timing chalta hai!",
+      "elder": "Koi chinta nahi 😊 Aap aaram se join karein.",
+      "friend": "Entry toh hero wali hi honi chahiye 😄",
+      "sibling": "Hero entry mode ON 😂"
+    }
+  },
+  {
+    "id": "crowd",
+    "keywords": [
+      "bheed",
+      "crowd"
+    ],
+    "answers": {
+      "default": "Yes, lots of loved ones gathered 😊 That’s the beauty of weddings!",
+      "elder": "Guests kaafi hain 😊 Sab milkar khushi mana rahe hain.",
+      "friend": "Full house = full fun 😄",
+      "sibling": "Public hi public 😂 Party legit hai!"
+    }
+  },
+  {
+    "id": "dance_floor",
+    "keywords": [
+      "dance floor",
+      "dance kahan"
+    ],
+    "answers": {
+      "default": "Dance floor main celebration area mein hai 💃 Ready for some moves?",
+      "elder": "Dance area saamne hi arranged hai 😊",
+      "friend": "Dance floor garam ho raha hai 😄 Ready?",
+      "sibling": "Naagin step ready rakh 😂"
+    }
+  },
+  {
+    "id": "dj_request",
+    "keywords": [
+      "gaana bajao",
+      "song request"
+    ],
+    "answers": {
+      "default": "DJ requests le raha hai 🎵 Aap apna favourite gaana bol sakte hain!",
+      "elder": "DJ se gaane ki request ki ja sakti hai 😊",
+      "friend": "DJ booth pe ja aur apna banger chalwa 😄",
+      "sibling": "Apna entry song lagwa 😂"
+    }
+  },
+  {
+    "id": "stage_photo",
+    "keywords": [
+      "stage photo",
+      "stage kahan"
+    ],
+    "answers": {
+      "default": "Stage beautifully decorated hai 📸 Perfect photo spot!",
+      "elder": "Stage saamne hi sajaya gaya hai 😊",
+      "friend": "Stage = selfie hotspot 😄",
+      "sibling": "Stage pe pose maar superstar 😂"
+    }
+  },
+  {
+    "id": "dessert",
+    "keywords": [
+      "dessert",
+      "sweet dish"
+    ],
+    "answers": {
+      "default": "Dessert counter aapka wait kar raha hai 🍰 Meetha toh banta hai!",
+      "elder": "Meetha bhi arrange hai 😊 Zaroor try karein.",
+      "friend": "Dessert skip mat karna 😄",
+      "sibling": "Meetha pehle, diet baad mein 😂"
+    }
+  },
+  {
+    "id": "tea_coffee",
+    "keywords": [
+      "chai",
+      "coffee"
+    ],
+    "answers": {
+      "default": "Tea & coffee counter ready hai ☕ Relax and enjoy!",
+      "elder": "Chai coffee dono uplabdh hain 😊",
+      "friend": "Chai break le le 😄",
+      "sibling": "Chai pe gossip time 😂"
+    }
+  },
+  {
+    "id": "decor",
+    "keywords": [
+      "decor",
+      "decoration"
+    ],
+    "answers": {
+      "default": "Décor specially curated hai ✨ Hope you’re loving the vibe!",
+      "elder": "Decoration specially design ki gayi hai 😊",
+      "friend": "Decor aesthetic AF 😄",
+      "sibling": "Instagram content mil gaya 😂"
+    }
+  },
+  {
+    "id": "bored",
+    "keywords": [
+      "boring"
+    ],
+    "answers": {
+      "default": "Bas thodi der mein music aur energy aur badhegi 😊",
+      "elder": "Program abhi aur lively hoga 😊",
+      "friend": "Wait kar… abhi fun peak pe jayega 😄",
+      "sibling": "Patience young padawan 😂"
+    }
+  },
+  {
+    "id": "after_party",
+    "keywords": [
+      "after party"
+    ],
+    "answers": {
+      "default": "Celebrations continue rahengi 😊 Wedding energy never stops!",
+      "elder": "Celebration abhi chalti rahegi 😊",
+      "friend": "After party scene strong hai 😄",
+      "sibling": "Raat jawaan hai 😂"
+    }
+  },
+  {
+    "id": "photo_team",
+    "keywords": [
+      "photographer",
+      "photo wala",
+      "camera team"
+    ],
+    "answers": {
+      "default": "Our photo team is capturing every special moment 📸 Smile, you might be in the next reel!",
+      "elder": "Professional photographers poore event cover kar rahe hain 😊",
+      "friend": "Photographer har jagah hai 😄 Candid mode ON!",
+      "sibling": "Camera se bach ke reh 😂 Har jagah hai!"
+    }
+  },
+  {
+    "id": "video_reel",
+    "keywords": [
+      "reel",
+      "video",
+      "cinematic"
+    ],
+    "answers": {
+      "default": "Yes! Cinematic video coverage chal rahi hai 🎥",
+      "elder": "Video coverage properly arranged hai 😊",
+      "friend": "Reel banegi full Bollywood style 😄",
+      "sibling": "Viral reel banegi pakka 😂"
+    }
+  },
+  {
+    "id": "outfit_compliment",
+    "keywords": [
+      "mera outfit",
+      "kaisa lag raha",
+      "dress kaisi"
+    ],
+    "answers": {
+      "default": "You look amazing! Perfect for the celebration ✨",
+      "elder": "Aap bahut achhe lag rahe hain 😊",
+      "friend": "Outfit on point 😄",
+      "sibling": "Model lag raha hai 😂"
+    }
+  },
+  {
+    "id": "makeup_touchup",
+    "keywords": [
+      "makeup",
+      "touchup",
+      "lipstick"
+    ],
+    "answers": {
+      "default": "Makeup touch-up area available hai 😊",
+      "elder": "Makeup area arranged hai 😊",
+      "friend": "Touch-up kar lo, photos aane wali hain 😄",
+      "sibling": "Makeup fix kar, camera aa gaya 😂"
+    }
+  },
+  {
+    "id": "where_family",
+    "keywords": [
+      "family kahan",
+      "parents kahan"
+    ],
+    "answers": {
+      "default": "Family mostly stage ya main area ke aas-paas hai 😊",
+      "elder": "Family stage ke paas hi hogi 😊",
+      "friend": "Stage side mil jayenge 😄",
+      "sibling": "Stage pe hi hai sab 😂"
+    }
+  },
+  {
+    "id": "gift_return",
+    "keywords": [
+      "return gift",
+      "favors"
+    ],
+    "answers": {
+      "default": "Return gifts exit pe milenge 🎁",
+      "elder": "Return gifts exit area par milenge 😊",
+      "friend": "Gift lena mat bhoolna 😄",
+      "sibling": "Gift pakad ke jaana 😂"
+    }
+  },
+  {
+    "id": "entry_timing",
+    "keywords": [
+      "entry kab",
+      "entry time"
+    ],
+    "answers": {
+      "default": "Guests ki entry anytime welcome hai 😊",
+      "elder": "Entry flexible hai 😊",
+      "friend": "Jab aaye tab swag se aaye 😄",
+      "sibling": "Hero entry maar 😂"
+    }
+  },
+  {
+    "id": "parking_full",
+    "keywords": [
+      "parking full",
+      "jagah nahi"
+    ],
+    "answers": {
+      "default": "Valet team help karegi 😊",
+      "elder": "Valet parking assist karegi 😊",
+      "friend": "Valet ko bol 😄",
+      "sibling": "Gaadi unko de 😂"
+    }
+  },
+  {
+    "id": "kids_entertainment",
+    "keywords": [
+      "kids bored",
+      "bache bore"
+    ],
+    "answers": {
+      "default": "Kids zone fun activities ke saath ready hai 😊",
+      "elder": "Bachon ke liye activities arranged hain 😊",
+      "friend": "Kids zone bhej do 😄",
+      "sibling": "Bachon ka club udhar hai 😂"
+    }
+  },
+  {
+    "id": "heat_weather",
+    "keywords": [
+      "garam lag raha",
+      "heat"
+    ],
+    "answers": {
+      "default": "Cooling arrangements available hain 😊",
+      "elder": "Cooling arrangement proper hai 😊",
+      "friend": "Thanda mil jayega 😄",
+      "sibling": "Garmi mein bhi vibe 😂"
+    }
+  },
+  {
+    "id": "cold_weather",
+    "keywords": [
+      "thand lag rahi"
+    ],
+    "answers": {
+      "default": "Warm seating & comfort arrangements hain 😊",
+      "elder": "Comfort arrangements hain 😊",
+      "friend": "Cozy vibe 😄",
+      "sibling": "Shaadi mein thand kahan 😂"
+    }
+  },
+  {
+    "id": "selfie_spots",
+    "keywords": [
+      "selfie kahan",
+      "photo spot"
+    ],
+    "answers": {
+      "default": "Décor areas perfect selfie spots hain 📸",
+      "elder": "Photo spots decorate kiye gaye hain 😊",
+      "friend": "Every corner Instagram-ready 😄",
+      "sibling": "Content mil gaya 😂"
+    }
+  },
+  {
+    "id": "food_spicy",
+    "keywords": [
+      "teekha",
+      "spicy"
+    ],
+    "answers": {
+      "default": "Food mild to spicy options mein hai 😊",
+      "elder": "Different taste options available hain 😊",
+      "friend": "Spice level choose kar 😄",
+      "sibling": "Mirchi sambhal 😂"
+    }
+  },
+  {
+    "id": "special_diet",
+    "keywords": [
+      "diet",
+      "healthy food"
+    ],
+    "answers": {
+      "default": "Healthy options bhi available hain 😊",
+      "elder": "Diet-friendly food bhi hai 😊",
+      "friend": "Healthy bhi hai 😄",
+      "sibling": "Diet kal se 😂"
+    }
+  },
+  {
+    "id": "where_exit",
+    "keywords": [
+      "exit kahan",
+      "bahar ka rasta"
+    ],
+    "answers": {
+      "default": "Exit clearly marked hai 😊",
+      "elder": "Exit direction boards lage hain 😊",
+      "friend": "Boards follow kar 😄",
+      "sibling": "Bhaag nahi raha na 😂"
+    }
+  },
+  {
+    "id": "how_long",
+    "keywords": [
+      "kitni der chalega",
+      "kab tak"
+    ],
+    "answers": {
+      "default": "Celebrations late tak chalengi 😊",
+      "elder": "Program late tak chalega 😊",
+      "friend": "Night long party 😄",
+      "sibling": "Raat jawaan hai 😂"
+    }
+  },
+  {
+    "id": "who_planned",
+    "keywords": [
+      "kisne plan kiya",
+      "planner kaun"
+    ],
+    "answers": {
+      "default": "Everything lovingly planned by family & planners 😊",
+      "elder": "Family aur planners ne milkar arrange kiya 😊",
+      "friend": "Planner ne kamaal kar diya 😄",
+      "sibling": "Full production hai 😂"
+    }
+  },
+  {
+    "id": "compliment_decor",
+    "keywords": [
+      "decor acha",
+      "beautiful decor"
+    ],
+    "answers": {
+      "default": "Glad you loved it 😊 It’s designed with love!",
+      "elder": "Khushi hui aapko pasand aaya 😊",
+      "friend": "Decor fire hai 😄",
+      "sibling": "Pinterest se uthaaya lagta hai 😂"
+    }
+  },
+  {
+    "id": "too_loud",
+    "keywords": [
+      "bahut loud",
+      "shor"
+    ],
+    "answers": {
+      "default": "Volume adjust karwa dete hain 😊",
+      "elder": "Volume check karwa dete hain 😊",
+      "friend": "DJ ko bol dete hain 😄",
+      "sibling": "DJ mood mein hai 😂"
+    }
+  },
+  {
+    "id": "feeling_emotional",
+    "keywords": [
+      "emotional",
+      "rona aa raha",
+      "sentimental"
+    ],
+    "answers": {
+      "default": "Weddings are emotional 💛 Beautiful memories being made!",
+      "elder": "Shaadi ke pal waise hi dil ko choo jaate hain 😊",
+      "friend": "Arre emotional mat ho, abhi dance bhi karna hai 😄",
+      "sibling": "Rona mana hai, makeup kharab ho jayega 😂"
+    }
+  },
+  {
+    "id": "missing_someone",
+    "keywords": [
+      "miss kar rahe",
+      "yaad aa rahi"
+    ],
+    "answers": {
+      "default": "Loved ones ki yaadein bhi celebration ka hissa hoti hain 💛",
+      "elder": "Yaadein bhi khushi ka hissa hoti hain 😊",
+      "friend": "Call laga le 😄",
+      "sibling": "Video call kar de 😂"
+    }
+  },
+  {
+    "id": "too_tired_to_dance",
+    "keywords": [
+      "dance nahi ho raha",
+      "thak gaya dance"
+    ],
+    "answers": {
+      "default": "No pressure 😊 Enjoy at your pace!",
+      "elder": "Aap aaram se enjoy karein 😊",
+      "friend": "Thoda sa toh banta hai 😄",
+      "sibling": "Ek gaana toh naach 😂"
+    }
+  },
+  {
+    "id": "where_friends",
+    "keywords": [
+      "friends kahan",
+      "mera group kahan"
+    ],
+    "answers": {
+      "default": "Friends mostly dance floor ya food area mein milte hain 😊",
+      "elder": "Young guests dance area mein honge 😊",
+      "friend": "Dance floor check kar 😄",
+      "sibling": "Group dance chal raha hoga 😂"
+    }
+  },
+  {
+    "id": "hungry_now",
+    "keywords": [
+      "bhook lagi",
+      "hungry"
+    ],
+    "answers": {
+      "default": "Food counters ready hain 😊 Aap enjoy karein!",
+      "elder": "Khana available hai 😊",
+      "friend": "Seedha buffet pe ja 😄",
+      "sibling": "Plate le aur toot pad 😂"
+    }
+  },
+  {
+    "id": "food_praise",
+    "keywords": [
+      "khana acha",
+      "food tasty"
+    ],
+    "answers": {
+      "default": "Glad you loved the food 😊",
+      "elder": "Khushi hui aapko pasand aaya 😊",
+      "friend": "Chef ko bolte hain 😄",
+      "sibling": "Aur kha le phir 😂"
+    }
+  },
+  {
+    "id": "too_full",
+    "keywords": [
+      "zyada kha liya",
+      "pet bhar gaya"
+    ],
+    "answers": {
+      "default": "Shaadi ka khana control mein khana mushkil hota hai 😄",
+      "elder": "Shaadi mein thoda extra ho hi jata hai 😊",
+      "friend": "Dessert abhi baaki hai 😄",
+      "sibling": "Abhi round 2 hai 😂"
+    }
+  },
+  {
+    "id": "where_bar",
+    "keywords": [
+      "bar kahan",
+      "drinks kahan"
+    ],
+    "answers": {
+      "default": "Bar designated area mein hai 🍸",
+      "elder": "Drinks counter alag se arranged hai 😊",
+      "friend": "Bar side aa 😄",
+      "sibling": "Idhar aa samjhata hoon 😂"
+    }
+  },
+  {
+    "id": "slow_service",
+    "keywords": [
+      "late service",
+      "wait kar rahe"
+    ],
+    "answers": {
+      "default": "Sorry for the wait 🙏 Team is on it!",
+      "elder": "Kshama karein, staff assist kar raha hai 😊",
+      "friend": "Bas aa raha hai 😄",
+      "sibling": "Shaadi rush hai boss 😂"
+    }
+  },
+  {
+    "id": "where_host_parents",
+    "keywords": [
+      "mummy papa kahan",
+      "parents kahan"
+    ],
+    "answers": {
+      "default": "They’re greeting guests near stage 😊",
+      "elder": "Woh mehmaanon ka swagat kar rahe hain 😊",
+      "friend": "Stage side milenge 😄",
+      "sibling": "Busy celebs hai 😂"
+    }
+  },
+  {
+    "id": "washroom_clean",
+    "keywords": [
+      "washroom clean",
+      "clean hai"
+    ],
+    "answers": {
+      "default": "Yes, regular cleaning ho rahi hai 😊",
+      "elder": "Cleanliness maintain ki ja rahi hai 😊",
+      "friend": "Clean hai 😄",
+      "sibling": "5-star level 😂"
+    }
+  },
+  {
+    "id": "music_good",
+    "keywords": [
+      "music acha",
+      "songs ache"
+    ],
+    "answers": {
+      "default": "Glad you’re enjoying the music 🎶",
+      "elder": "Music pleasant hai 😊",
+      "friend": "DJ fire hai 😄",
+      "sibling": "DJ legend 😂"
+    }
+  },
+  {
+    "id": "kids_noise",
+    "keywords": [
+      "bache shor",
+      "kids noisy"
+    ],
+    "answers": {
+      "default": "Kids excitement bhi celebration ka part hai 😊",
+      "elder": "Bachon ki khushi bhi zaroori hai 😊",
+      "friend": "Energy high hai 😄",
+      "sibling": "Mini baraat 😂"
+    }
+  },
+  {
+    "id": "want_group_photo",
+    "keywords": [
+      "group photo",
+      "family photo"
+    ],
+    "answers": {
+      "default": "Photographer ko batayein 😊",
+      "elder": "Photographer arrange kar denge 😊",
+      "friend": "Group bana 😄",
+      "sibling": "Sabko bula 😂"
+    }
+  },
+  {
+    "id": "lost_car_keys",
+    "keywords": [
+      "car keys lost",
+      "chabi kho gayi"
+    ],
+    "answers": {
+      "default": "Valet desk help karegi 😊",
+      "elder": "Valet se sampark karein 😊",
+      "friend": "Valet pe check kar 😄",
+      "sibling": "Pocket check kar pehle 😂"
+    }
+  },
+  {
+    "id": "wifi_issue",
+    "keywords": [
+      "wifi nahi",
+      "wifi slow"
+    ],
+    "answers": {
+      "default": "Network crowd ki wajah se slow ho sakta hai 😊",
+      "elder": "Network fluctuate ho sakta hai 😊",
+      "friend": "Reels baad mein 😄",
+      "sibling": "Shaadi enjoy kar 😂"
+    }
+  },
+  {
+    "id": "want_to_leave",
+    "keywords": [
+      "ghar jana",
+      "leave early"
+    ],
+    "answers": {
+      "default": "Thanks for coming 😊 Safe travels!",
+      "elder": "Aane ke liye dhanyavaad 😊",
+      "friend": "Itni jaldi? 😄",
+      "sibling": "After party miss karega 😂"
+    }
+  },
+  {
+    "id": "had_fun",
+    "keywords": [
+      "maza aaya",
+      "fun tha"
+    ],
+    "answers": {
+      "default": "So happy to hear that 😊",
+      "elder": "Khushi hui aapne enjoy kiya 😊",
+      "friend": "That’s the vibe 😄",
+      "sibling": "Party successful 😂"
+    }
+  },
+  {
+    "id": "blessing_couple",
+    "keywords": [
+      "bless",
+      "dua",
+      "aashirwad"
+    ],
+    "answers": {
+      "default": "Your wishes mean a lot 💛",
+      "elder": "Aapke aashirwad bahumulya hain 😊",
+      "friend": "Couple khush ho jayega 😄",
+      "sibling": "Blessings accepted 😂"
+    }
+  },
+  {
+    "id": "goodbye",
+    "keywords": [
+      "bye",
+      "goodnight",
+      "chal rahe"
+    ],
+    "answers": {
+      "default": "Thank you for being part of the celebration 😊",
+      "elder": "Aapka aana humare liye khushi ki baat hai 😊",
+      "friend": "See you on dance floor again 😄",
+      "sibling": "Kal milte hain 😂"
+    }
+  },
+  {
+    "id": "room_sharing",
+    "keywords": [
+      "room share",
+      "sharing room",
+      "kiske saath room"
+    ],
+    "answers": {
+      "default": "Rooms planned hain guest list ke hisaab se 😊",
+      "elder": "Room allotment pehle se plan hai 😊",
+      "friend": "Room already planned hai 😄",
+      "sibling": "Room partner surprise hai 😂"
+    }
+  },
+  {
+    "id": "room_upgrade",
+    "keywords": [
+      "bada room",
+      "upgrade room"
+    ],
+    "answers": {
+      "default": "Rooms pre-assigned hain 😊 Agar available hua toh help karenge.",
+      "elder": "Availability pe depend karega 😊",
+      "friend": "Upgrade luck pe hai 😄",
+      "sibling": "Suite chahiye kya 😂"
+    }
+  },
+  {
+    "id": "early_checkin_request",
+    "keywords": [
+      "jaldi checkin",
+      "early checkin"
+    ],
+    "answers": {
+      "default": "Early check-in request try ki ja sakti hai 😊",
+      "elder": "Early check-in availability pe depend hai 😊",
+      "friend": "Try karwa dete 😄",
+      "sibling": "VIP entry chahiye 😂"
+    }
+  },
+  {
+    "id": "late_checkout",
+    "keywords": [
+      "late checkout"
+    ],
+    "answers": {
+      "default": "Late checkout hotel policy pe depend karega 😊",
+      "elder": "Hotel timing follow hogi 😊",
+      "friend": "Late checkout jugaad ho sakta 😄",
+      "sibling": "Sone ka plan hai kya 😂"
+    }
+  },
+  {
+    "id": "extra_guest",
+    "keywords": [
+      "extra guest",
+      "friend la sakte"
+    ],
+    "answers": {
+      "default": "Guest list fixed hai 😊",
+      "elder": "Guest list final hai 😊",
+      "friend": "Extra guest tricky hai 😄",
+      "sibling": "Plus one chhupa ke la raha kya 😂"
+    }
+  },
+  {
+    "id": "kids_allowed",
+    "keywords": [
+      "kids allowed",
+      "bache allowed"
+    ],
+    "answers": {
+      "default": "Yes 😊 Kids welcome hain.",
+      "elder": "Bachon ka swagat hai 😊",
+      "friend": "Kids friendly wedding 😄",
+      "sibling": "Mini baraat allowed 😂"
+    }
+  },
+  {
+    "id": "breakfast_included",
+    "keywords": [
+      "breakfast milega",
+      "subah ka khana"
+    ],
+    "answers": {
+      "default": "Yes 😊 Breakfast arrangements hain.",
+      "elder": "Breakfast arranged hai 😊",
+      "friend": "Breakfast sorted 😄",
+      "sibling": "Nashta ready 😂"
+    }
+  },
+  {
+    "id": "lunch_next_day",
+    "keywords": [
+      "next day lunch"
+    ],
+    "answers": {
+      "default": "Next day meal planned hai 😊",
+      "elder": "Meal arrangement hai 😊",
+      "friend": "Food continues 😄",
+      "sibling": "Party khatam nahi 😂"
+    }
+  },
+  {
+    "id": "alcohol_own",
+    "keywords": [
+      "apni drink la sakte"
+    ],
+    "answers": {
+      "default": "Outside alcohol allowed nahi hai 😊",
+      "elder": "Venue rules follow karne honge 😊",
+      "friend": "Bar available hai 😄",
+      "sibling": "Smuggling mat kar 😂"
+    }
+  },
+  {
+    "id": "dress_code_confusion",
+    "keywords": [
+      "dress code kya",
+      "theme kya"
+    ],
+    "answers": {
+      "default": "Dress code event-wise shared hai 😊",
+      "elder": "Dress code follow karein 😊",
+      "friend": "Theme follow kar 😄",
+      "sibling": "Matching color pehen 😂"
+    }
+  },
+  {
+    "id": "laundry_service",
+    "keywords": [
+      "laundry",
+      "kapde dhulenge"
+    ],
+    "answers": {
+      "default": "Laundry hotel service pe depend hai 😊",
+      "elder": "Hotel laundry available hoti hai 😊",
+      "friend": "Laundry mil jayegi 😄",
+      "sibling": "Extra outfit la 😂"
+    }
+  },
+  {
+    "id": "iron_clothes",
+    "keywords": [
+      "press kapde",
+      "iron"
+    ],
+    "answers": {
+      "default": "Iron service available hai 😊",
+      "elder": "Press arrange ho sakti hai 😊",
+      "friend": "Iron mil jayega 😄",
+      "sibling": "Wrinkle look bhi trend hai 😂"
+    }
+  },
+  {
+    "id": "pool_access",
+    "keywords": [
+      "pool use",
+      "swimming"
+    ],
+    "answers": {
+      "default": "Pool access allowed hai designated time pe 😊",
+      "elder": "Pool timing follow karein 😊",
+      "friend": "Pool party bhi ho sakti 😄",
+      "sibling": "Dive maar 😂"
+    }
+  },
+  {
+    "id": "spa_service",
+    "keywords": [
+      "spa",
+      "massage"
+    ],
+    "answers": {
+      "default": "Spa hotel service pe depend karega 😊",
+      "elder": "Spa facility hotel provide karta hai 😊",
+      "friend": "Relax mode 😄",
+      "sibling": "Royal life 😂"
+    }
+  },
+  {
+    "id": "hangover_help",
+    "keywords": [
+      "hangover",
+      "sar dard drink"
+    ],
+    "answers": {
+      "default": "Hydrate karein aur rest lein 😊",
+      "elder": "Aaram karein 😊",
+      "friend": "Nimbu paani le 😄",
+      "sibling": "Control nahi hua 😂"
+    }
+  },
+  {
+    "id": "doctor_nearby",
+    "keywords": [
+      "doctor nearby",
+      "clinic"
+    ],
+    "answers": {
+      "default": "Medical help nearby available hai 😊",
+      "elder": "Doctor contact available hai 😊",
+      "friend": "Doctor mil jayega 😄",
+      "sibling": "Health first 😂"
+    }
+  },
+  {
+    "id": "pharmacy",
+    "keywords": [
+      "medicine shop",
+      "pharmacy"
+    ],
+    "answers": {
+      "default": "Nearby pharmacy available hai 😊",
+      "elder": "Medical store paas hi hai 😊",
+      "friend": "Medicine mil jayegi 😄",
+      "sibling": "First aid le 😂"
+    }
+  },
+  {
+    "id": "pet_allowed",
+    "keywords": [
+      "pet la sakte",
+      "dog allowed"
+    ],
+    "answers": {
+      "default": "Pets venue policy pe depend karta hai 😊",
+      "elder": "Venue rules follow karne honge 😊",
+      "friend": "Pet policy check kar 😄",
+      "sibling": "Dog bhi shaadi karega kya 😂"
+    }
+  },
+  {
+    "id": "return_transport",
+    "keywords": [
+      "wapas kaise",
+      "return travel"
+    ],
+    "answers": {
+      "default": "Return travel self-planned hota hai 😊",
+      "elder": "Return plan khud ka hota hai 😊",
+      "friend": "Same route back 😄",
+      "sibling": "Road trip part 2 😂"
+    }
+  },
+  {
+    "id": "forgot_item",
+    "keywords": [
+      "samaan bhool gaye",
+      "item reh gaya"
+    ],
+    "answers": {
+      "default": "Hotel staff se check karein 😊",
+      "elder": "Hotel desk help karegi 😊",
+      "friend": "Room check kar 😄",
+      "sibling": "Memory weak 😂"
+    }
+  },
+  {
+    "id": "route_from_delhi",
+    "keywords": [
+      "delhi se kaise",
+      "route delhi",
+      "delhi se aana"
+    ],
+    "answers": {
+      "default": "Delhi se Rewari highway route seedha aur smooth hai 😊 Google Maps pe venue naam daalenge toh direct aa jayega.",
+      "elder": "Delhi se highway route comfortable hai 😊 Maps follow karna easiest rahega.",
+      "friend": "Delhi se 2–3 hour drive hai 😄 Maps laga aur nikal!",
+      "sibling": "Delhi se road trip vibe hai 😂"
+    }
+  },
+  {
+    "id": "route_from_jaipur",
+    "keywords": [
+      "jaipur se kaise",
+      "route jaipur"
+    ],
+    "answers": {
+      "default": "Jaipur se highway drive around 4–5 hours hai 😊 Best is Google Maps navigation.",
+      "elder": "Jaipur se seedha highway route convenient hai 😊",
+      "friend": "Jaipur se chill drive hai 😄",
+      "sibling": "Jaipur se road trip mode ON 😂"
+    }
+  },
+  {
+    "id": "venue_exact_location",
+    "keywords": [
+      "exact location",
+      "map link",
+      "location bhejo"
+    ],
+    "answers": {
+      "default": "Main aapko Google Maps link bhej sakti hoon 😊",
+      "elder": "Location link share kar dete hain 😊",
+      "friend": "Maps link bhej deta hoon 😄",
+      "sibling": "Pin drop bhejta hoon 😂"
+    }
+  },
+  {
+    "id": "how_far_from_city",
+    "keywords": [
+      "kitna door",
+      "distance kitni"
+    ],
+    "answers": {
+      "default": "Venue city rush se thoda bahar hai for peaceful wedding vibes 😊",
+      "elder": "Venue highway side peaceful location par hai 😊",
+      "friend": "City noise se door, shaadi vibes ke liye perfect 😄",
+      "sibling": "Destination wedding feel hai 😂"
+    }
+  },
+  {
+    "id": "stay_provided",
+    "keywords": [
+      "stay hai",
+      "room milega",
+      "hotel hai"
+    ],
+    "answers": {
+      "default": "Yes 😊 Guests ke stay ke arrangements hain.",
+      "elder": "Stay arrangements properly kiye gaye hain 😊",
+      "friend": "Stay sorted hai 😄",
+      "sibling": "Room tension nahi 😂"
+    }
+  },
+  {
+    "id": "checkin_time",
+    "keywords": [
+      "checkin",
+      "room kab milega"
+    ],
+    "answers": {
+      "default": "Check-in afternoon se available hai 😊",
+      "elder": "Check-in smooth rahega 😊",
+      "friend": "Room mil jayega chill 😄",
+      "sibling": "Keys mil jayengi 😂"
+    }
+  },
+  {
+    "id": "pickup_from_station",
+    "keywords": [
+      "pickup",
+      "station se lene"
+    ],
+    "answers": {
+      "default": "Pickup request arrange ki ja sakti hai 😊",
+      "elder": "Pickup coordinate kiya ja sakta hai 😊",
+      "friend": "Pickup jugaad ho jayega 😄",
+      "sibling": "Driver bhej denge 😂"
+    }
+  },
+  {
+    "id": "nearest_station",
+    "keywords": [
+      "nearest station",
+      "railway station"
+    ],
+    "answers": {
+      "default": "Nearest railway station Rewari hai 😊",
+      "elder": "Rewari station sabse paas hai 😊",
+      "friend": "Rewari utar ja 😄",
+      "sibling": "Station se seedha venue 😂"
+    }
+  },
+  {
+    "id": "nearest_airport",
+    "keywords": [
+      "airport",
+      "flight"
+    ],
+    "answers": {
+      "default": "Delhi airport nearest hai 😊",
+      "elder": "Delhi airport convenient rahega 😊",
+      "friend": "Flight Delhi utar 😄",
+      "sibling": "Airport se road trip 😂"
+    }
+  },
+  {
+    "id": "what_to_carry",
+    "keywords": [
+      "kya leke aaye",
+      "carry kya kare"
+    ],
+    "answers": {
+      "default": "Wedding outfits + essentials enough 😊",
+      "elder": "Basic travel essentials rakhein 😊",
+      "friend": "Outfit + charger bas 😄",
+      "sibling": "Style leke aa 😂"
+    }
+  },
+  {
+    "id": "weather_rewari",
+    "keywords": [
+      "weather",
+      "garmi hogi"
+    ],
+    "answers": {
+      "default": "Weather pleasant rahega 😊",
+      "elder": "Weather comfortable hai 😊",
+      "friend": "Perfect shaadi weather 😄",
+      "sibling": "Na zyada garmi na thand 😂"
+    }
+  },
+  {
+    "id": "network_highway",
+    "keywords": [
+      "network milega",
+      "signal"
+    ],
+    "answers": {
+      "default": "Network mostly stable hai 😊",
+      "elder": "Signal available rahega 😊",
+      "friend": "Reels upload ho jayengi 😄",
+      "sibling": "Network bhi aa jayega 😂"
+    }
+  },
+  {
+    "id": "late_night_drive",
+    "keywords": [
+      "raat ko drive",
+      "night safe"
+    ],
+    "answers": {
+      "default": "Highway route safe hai 😊",
+      "elder": "Highway travel safe hai 😊",
+      "friend": "Night drive safe 😄",
+      "sibling": "Headlights on aur chalo 😂"
+    }
+  },
+  {
+    "id": "kids_travel",
+    "keywords": [
+      "bache travel",
+      "kids drive"
+    ],
+    "answers": {
+      "default": "Road smooth hai 😊 Kids-friendly drive.",
+      "elder": "Drive comfortable hai 😊",
+      "friend": "Kids ko bhi maza aayega 😄",
+      "sibling": "Snacks deke chala 😂"
+    }
+  },
+  {
+    "id": "elder_travel",
+    "keywords": [
+      "elder travel",
+      "parents drive"
+    ],
+    "answers": {
+      "default": "Route smooth aur comfortable hai 😊",
+      "elder": "Drive convenient hai 😊",
+      "friend": "Comfortable drive 😄",
+      "sibling": "Break lete hue aao 😂"
+    }
+  },
+  {
+    "id": "when_to_leave",
+    "keywords": [
+      "kab nikle",
+      "best time nikalne"
+    ],
+    "answers": {
+      "default": "Traffic avoid karne ke liye early leave best 😊",
+      "elder": "Subah nikalna convenient rahega 😊",
+      "friend": "Peak traffic avoid kar 😄",
+      "sibling": "Jaldi nikal warna jam me atak jaega😂"
+    }
+  },
+  {
+    "id": "event_timing_mehendi",
+    "category": "Events",
+    "keywords": [
+      "mehendi",
+      "mehandi",
+      "mehndi"
+    ],
+    "answers": {
+      "default": "Mehendi ceremony is on 18th Feb at 12:00 PM.",
+      "elder": "Namaste! Mehendi ka Event 18 Feb ko dopahar 12 baje shuru hoga.",
+      "friend": "Mehendi vibes start at 12 PM on 18th Feb! Don't be late! 💃",
+      "sibling": "Oye, Mehendi 18 Feb ko 12 baje hai. Time pe pahunch jana, bahut kaam hai! 😉"
+    }
+  },
+  {
+    "id": "event_timing_sangeet",
+    "category": "Events",
+    "keywords": [
+      "sangeet",
+      "dance",
+      "performance",
+      "music"
+    ],
+    "answers": {
+      "default": "Sangeet ceremony is on 18th Feb at 7:00 PM.",
+      "elder": "Namaste! Sangeet sandhya 18 Feb ko shaam 7 baje aayojit ki gayi hai.",
+      "friend": "Sangeet night is ON! 18th Feb, 7 PM. Get your dancing shoes ready! 🕺💃",
+      "sibling": "Sangeet 18 Feb, 7 PM. Performance ready hai na? Varna bezzati mat karwana! 😂"
+    }
+  },
+  {
+    "id": "event_timing_haldi",
+    "category": "Events",
+    "keywords": [
+      "haldi",
+      "yellow",
+      "ubtan"
+    ],
+    "answers": {
+      "default": "Haldi ceremony is on 19th Feb at 11:30 AM.",
+      "elder": "Pranam. Haldi ki rasam 19 Feb ko subah 11:30 baje hogi.",
+      "friend": "Haldi madness starts 19th Feb, 11:30 AM. Wear yellow and get ready to get dirty! 💛",
+      "sibling": "Haldi 19 Feb ko 11:30 baje hai. Kurta kharab hone wala hai tera! 😜"
+    }
+  },
+  {
+    "id": "event_timing_shaadi",
+    "category": "Events",
+    "keywords": [
+      "shaadi",
+      "wedding",
+      "pheras",
+      "main event",
+      "marriage"
+    ],
+    "answers": {
+      "default": "The Wedding (Shaadi) is on 19th Feb at 8:00 PM.",
+      "elder": "Shubh Vivah ka muhurat 19 Feb ko raat 8 baje ka hai.",
+      "friend": "The Big Fat Wedding is on 19th Feb, 8 PM! Khana, Peena, aur Dance! 🍛🤵👰",
+      "sibling": "Shaadi 19 Feb, 8 PM. Finally woh din aa gaya! Emotional mat hona zyada. 😂"
+    }
+  },
+  {
+    "id": "event_timing_baraat",
+    "category": "Events",
+    "keywords": [
+      "baraat",
+      "barat",
+      "entry",
+      "ghodi"
+    ],
+    "answers": {
+      "default": "Baraat shaadi se thoda pehle venue par pahunchti hai (Approx 7:00 PM).",
+      "elder": "Baraat shaadi se thoda pehle venue par pahunch jayegi.",
+      "friend": "Baraat will be there just before the wedding! Be ready to dance! 🐍💃",
+      "sibling": "Baraat time pe aa jayegi, tu bas taiyar rehna! 🕺"
+    }
+  },
+  {
+    "id": "food_menu",
+    "category": "Food",
+    "keywords": [
+      "khana",
+      "food",
+      "menu",
+      "dinner",
+      "lunch",
+      "eating"
+    ],
+    "answers": {
+      "default": "We have a grand buffet with Indian, Chinese and Continental cuisines.",
+      "elder": "Bhojan mein sabhi parakar ke vyanjan hain - Desi, Chinese aur Continental.",
+      "friend": "Food scene is sorted! Indian, Chinese, Continental - sab hai. 🍕🥗🍛",
+      "sibling": "Khaana bahot hai, bas plate mat bharna pehle se! 😂"
+    }
+  },
+  {
+    "id": "alcohol_policy",
+    "category": "Food",
+    "keywords": [
+      "alcohol",
+      "daaru",
+      "drink",
+      "cocktail",
+      "bar"
+    ],
+    "answers": {
+      "default": "Drinks will be served at the cocktail bar.",
+      "elder": "Drinks ke liye alag vyavastha ki gayi hai.",
+      "friend": "Car-o-bar nahi, full bar open hai! 🍻 Cheers!",
+      "sibling": "Daaru hai, par limit mein rehna! Mummy dekh lengi! 🤫🍷"
+    }
+  },
+  {
+    "id": "general_greeting",
+    "category": "ChitChat",
+    "keywords": [
+      "hi",
+      "hello",
+      "hey",
+      "namaste",
+      "hola"
+    ],
+    "answers": {
+      "default": "Hello! How can I help you regarding the wedding?",
+      "elder": "Namaste Ji! 🙏 Kahiye main aapki kya seva kar sakti hoon?",
+      "friend": "Yo! What's up? Ready to party? 🎉",
+      "sibling": "Aur bhai/behen! Bol kya scene hai? 😎"
+    }
+  },
+  {
+    "id": "general_wellbeing",
+    "category": "ChitChat",
+    "keywords": [
+      "kya haal",
+      "kaise ho",
+      "how are you",
+      "what's up"
+    ],
+    "answers": {
+      "default": "I am great, just busy helping with the wedding preparations!",
+      "elder": "Main bilkul thik hoon, bas shaadi ki tayariyon mein vyast hoon. Aap kaise hain?",
+      "friend": "Bas badhiya! Full wedding mode ON! Aap sunao? 🤘",
+      "sibling": "Mast! Bas daud bhaag chalu hai. Tu bata, dress ready hai? 👗👔"
+    }
+  },
+  {
+    "id": "casual_mast",
+    "category": "ChitChat",
+    "keywords": [
+      "mast",
+      "best",
+      "awesome",
+      "badhiya",
+      "jhakaas"
+    ],
+    "answers": {
+      "default": "Glad to hear that! The wedding vibes are just getting started! ✨",
+      "elder": "Ji dhanyavaad! Sab aap logon ka aasheervaad hai. 🙏",
+      "friend": "Hai na? Abhi toh party shuru hui hai! 🕺💥",
+      "sibling": "Hahaha sahi hai! Bas nazar na lage! 😉🧿"
+    }
+  },
+  {
+    "id": "event_today_schedule",
+    "category": "Events",
+    "keywords": [
+      "aaj kya hai",
+      "today event",
+      "aaj ka program",
+      "kal kya hai",
+      "tomorrow event"
+    ],
+    "answers": {
+      "default": "Aaj wedding-related events planned hain. Aap kis function ke baare mein poochna chahte hain?",
+      "elder": "Aaj shaadi ke sambandhit karyakram aayojit hain. Kripya batayein kaunsa poochna hai.",
+      "friend": "Aaj wedding vibes full on hain! Batao kaunsa event jaan’na hai 😄",
+      "sibling": "Aaj ka scene full packed hai. Bol kya detail chahiye? 😎"
+    }
+  },
+  {
+    "id": "event_delay",
+    "category": "Events",
+    "keywords": [
+      "late",
+      "delay",
+      "kab start hoga",
+      "kyu nahi shuru"
+    ],
+    "answers": {
+      "default": "Thoda sa delay ho sakta hai, lekin event jaldi hi shuru hoga.",
+      "elder": "Thodi der ka vilambh ho sakta hai, par sab vyavastha mein hai.",
+      "friend": "Thoda delay hai, par chill karo – party miss nahi hogi 😄",
+      "sibling": "Indian wedding hai bhai 😜 Thoda wait kar, shuru ho jayega!"
+    }
+  },
+  {
+    "id": "missed_event",
+    "category": "Events",
+    "keywords": [
+      "miss ho gaya",
+      "late aaunga",
+      "sirf shaadi"
+    ],
+    "answers": {
+      "default": "Bilkul theek hai, aap apni suvidha ke hisaab se events attend kar sakte hain.",
+      "elder": "Koi chinta ki baat nahi, aapki upasthiti hi mahatvapurn hai.",
+      "friend": "No stress! Shaadi mein milte hain 😄",
+      "sibling": "Koi scene nahi, bas shaadi miss mat karna 😏"
+    }
+  },
+  {
+    "id": "muhurat_details",
+    "category": "Events",
+    "keywords": [
+      "muhurat",
+      "shubh samay",
+      "pandit",
+      "auspicious"
+    ],
+    "answers": {
+      "default": "Shaadi ke muhurat pandit ji ke anusaar tay kiye gaye hain.",
+      "elder": "Shaadi ka shubh muhurat pandit ji dwara nirdharit kiya gaya hai.",
+      "friend": "Pandit ji ka green signal mil chuka hai 😄",
+      "sibling": "Pandit ji bole sab perfect hai, ab bas chill 😎"
+    }
+  },
+  {
+    "id": "event_duration",
+    "category": "Events",
+    "keywords": [
+      "kitni der",
+      "duration",
+      "kab tak"
+    ],
+    "answers": {
+      "default": "Event ka duration planned hai, aur smoothly conduct hoga.",
+      "elder": "Karyakram vyavasthit roop se sampann hoga.",
+      "friend": "Jab tak dance aur khana khatam nahi hota 😄",
+      "sibling": "Jab tak tu thak na jaaye 😂"
+    }
+  },
+  {
+    "id": "multiple_events_day",
+    "category": "Events",
+    "keywords": [
+      "same din",
+      "ek hi din",
+      "multiple events"
+    ],
+    "answers": {
+      "default": "Kuch events ek hi din aur kuch alag din par hain.",
+      "elder": "Kuch karyakram ek hi din mein aayojit kiye gaye hain.",
+      "friend": "Haan bhai, ek din mein multiple scenes hain 😄",
+      "sibling": "Ek din mein full wedding package hai 😎"
+    }
+  },
+  {
+    "id": "venue_directions",
+    "category": "Venue",
+    "keywords": [
+      "direction",
+      "map",
+      "route",
+      "kaise aaye",
+      "google map",
+      "location",
+      "link"
+    ],
+    "answers": {
+      "default": "You can use Google Maps to reach Royal Pepper Resort, NH-8: https://maps.app.goo.gl/vsnjMmxCAXKDZXd58",
+      "elder": "Aap Google Maps ka upyog karke Royal Pepper Resort, NH-8 pahunch sakte hain: https://maps.app.goo.gl/vsnjMmxCAXKDZXd58",
+      "friend": "Google Maps pe Royal Pepper Resort search maaro: https://maps.app.goo.gl/vsnjMmxCAXKDZXd58 📍",
+      "sibling": "Maps on kar aur seedha aa ja: https://maps.app.goo.gl/vsnjMmxCAXKDZXd58 😜"
+    }
+  },
+  {
+    "id": "parking_details",
+    "category": "Venue",
+    "keywords": [
+      "parking",
+      "gaadi",
+      "car",
+      "vehicle",
+      "valet"
+    ],
+    "answers": {
+      "default": "Parking and valet services are available at the venue.",
+      "elder": "Venue par parking aur valet seva uplabdh hai.",
+      "friend": "Parking tension free hai, valet bhi available hai 🚗",
+      "sibling": "Gaadi de dena valet ko, tu chill kar 😎"
+    }
+  },
+  {
+    "id": "entry_gate",
+    "category": "Venue",
+    "keywords": [
+      "entry",
+      "gate",
+      "andar kaise",
+      "main gate"
+    ],
+    "answers": {
+      "default": "Please enter from the main gate of the venue.",
+      "elder": "Kripya venue ke mukhya dwaar se pravesh karein.",
+      "friend": "Main gate se entry hai, wahin lights aur scene milega 😄",
+      "sibling": "Main gate se aana, back entry mein mat ghus jana 😂"
+    }
+  },
+  {
+    "id": "washroom_location",
+    "category": "Venue",
+    "keywords": [
+      "washroom",
+      "toilet",
+      "restroom",
+      "bathroom"
+    ],
+    "answers": {
+      "default": "Washrooms are available inside the venue and are clearly marked.",
+      "elder": "Washroom ki vyavastha venue ke andar uplabdh hai.",
+      "friend": "Washrooms andar hi hain, boards follow kar lo 🚻",
+      "sibling": "Washroom paas hi hai, bhaag ke mat jaana 😆"
+    }
+  },
+  {
+    "id": "seating_arrangement",
+    "category": "Venue",
+    "keywords": [
+      "seating",
+      "baithne",
+      "kahan baith",
+      "seat"
+    ],
+    "answers": {
+      "default": "Seating is arranged by the venue team. You can sit comfortably anywhere.",
+      "elder": "Baithak ki vyavastha vyavasthit roop se ki gayi hai.",
+      "friend": "Seats ka tension nahi, jahan mann ho baith jao 😄",
+      "sibling": "Jahan jagah mile baith ja, VIP mat ban 😜"
+    }
+  },
+  {
+    "id": "lost_help",
+    "category": "Venue",
+    "keywords": [
+      "lost",
+      "bhool gaya",
+      "confused",
+      "galat jagah"
+    ],
+    "answers": {
+      "default": "No worries! Venue staff or reception desk will help you.",
+      "elder": "Koi chinta nahi, reception desk ya staff madad kar denge.",
+      "friend": "Arre tension nahi, kisi staff ko pakad lo 😄",
+      "sibling": "Bhatak gaya kya? Kisi ko pooch le bhai 😂"
+    }
+  },
+  {
+    "id": "same_venue_all_events",
+    "category": "Venue",
+    "keywords": [
+      "sab events",
+      "same venue",
+      "ek hi jagah"
+    ],
+    "answers": {
+      "default": "Yes, all wedding events are happening at the same venue.",
+      "elder": "Haan ji, sabhi karyakram ek hi venue par hain.",
+      "friend": "Haan bhai, ek hi jagah full wedding scene 😄",
+      "sibling": "Haan re, venue change nahi hoga, chill 😎"
+    }
+  },
+  {
+    "id": "boredom_complaint",
+    "category": "Engagement",
+    "keywords": [
+      "boring",
+      "maza nahi",
+      "bore",
+      "bekar",
+      "maaza"
+    ],
+    "answers": {
+      "default": "The DJ is just warming up! Get ready to hit the dance floor! 💃",
+      "elder": "Kripya thoda dhairya rakhein, manoranjan jald hi shuru hoga.",
+      "friend": "Arre tu start toh kar! DJ ko bolun tera favourite gaana lagane ko? 🎵",
+      "sibling": "Overacting mat kar, jaake dance kar! 😂"
+    }
+  },
+  {
+    "id": "fun_comment",
+    "category": "Engagement",
+    "keywords": [
+      "fun",
+      "enjoy",
+      "maza aa gaya",
+      "best wedding"
+    ],
+    "answers": {
+      "default": "Yay! Glad you are having a great time! 🎉",
+      "elder": "Aapka aashirvaad bana rahe, yahi hamare liye kaafi hai. 🙏",
+      "friend": "Hai na? Best wedding of the year! 🚀",
+      "sibling": "Abhi toh party shuru hui hai! Ruku mat! 🔥"
+    }
+  },
+  {
+    "id": "love_story",
+    "keywords": [
+      "love story",
+      "kaise mile",
+      "arranged ya love"
+    ],
+    "answers": {
+      "default": "Love + destiny combo 💛 Baaki story couple hi batayega 😉",
+      "elder": "Unki kahani pyaari hai 😊 Detail woh khud batayenge.",
+      "friend": "Full filmy love story hai 😄",
+      "sibling": "Netflix series ban sakti hai 😂"
+    }
+  },
+  {
+    "id": "who_more_lucky",
+    "keywords": [
+      "kaun lucky",
+      "lucky kaun"
+    ],
+    "answers": {
+      "default": "Dono 😊 Perfect match hai.",
+      "elder": "Dono ek dusre ke liye shubh hain 😊",
+      "friend": "Dono jeet gaye 😄",
+      "sibling": "Dulha zyada lucky hai 😂"
+    }
+  },
+  {
+    "id": "who_dominates",
+    "keywords": [
+      "ghar pe kiski chalegi",
+      "boss kaun"
+    ],
+    "answers": {
+      "default": "Partnership wedding hai 😄",
+      "elder": "Dono milkar decisions lenge 😊",
+      "friend": "Bride boss hogi 😄",
+      "sibling": "Remote bride ke paas 😂"
+    }
+  },
+  {
+    "id": "first_fight",
+    "keywords": [
+      "pehli fight",
+      "ladai hui"
+    ],
+    "answers": {
+      "default": "Har couple ki cute nok-jhok hoti hai 😊",
+      "elder": "Choti-moti baatein normal hain 😊",
+      "friend": "Pyaar wali fights 😄",
+      "sibling": "Daily episode 😂"
+    }
+  },
+  {
+    "id": "honeymoon_where",
+    "keywords": [
+      "honeymoon",
+      "trip kahan"
+    ],
+    "answers": {
+      "default": "Secret destination 😉",
+      "elder": "Trip planned hai 😊",
+      "friend": "Foreign trip lag rahi 😄",
+      "sibling": "Bataunga nahi 😂"
+    }
+  },
+  {
+    "id": "ex_question",
+    "keywords": [
+      "ex",
+      "past relationship"
+    ],
+    "answers": {
+      "default": "Aaj sirf happy memories ka din hai 😊",
+      "elder": "Aaj khushi ka mauka hai 😊",
+      "friend": "Past is past 😄",
+      "sibling": "Dangerous question 😂"
+    }
+  },
+  {
+    "id": "who_proposed",
+    "keywords": [
+      "kisne propose",
+      "proposal kaise"
+    ],
+    "answers": {
+      "default": "Proposal sweet tha 💛",
+      "elder": "Khoobsurat moment tha 😊",
+      "friend": "Filmy proposal 😄",
+      "sibling": "Dulhe ne hi kiya 😂"
+    }
+  },
+  {
+    "id": "ai_single",
+    "keywords": [
+      "tum single ho",
+      "ai single"
+    ],
+    "answers": {
+      "default": "Main sirf wedding ke liye committed hoon 😄",
+      "elder": "Main digital assistant hoon 😊",
+      "friend": "Main forever single 😄",
+      "sibling": "Mera rishta kara de 😂"
+    }
+  },
+  {
+    "id": "ai_invited",
+    "keywords": [
+      "tum invited ho",
+      "ai shaadi mein"
+    ],
+    "answers": {
+      "default": "Main toh yahin hoon sab manage karne 😊",
+      "elder": "Main seva mein present hoon 😊",
+      "friend": "Main virtual guest 😄",
+      "sibling": "Main bhi baraati 😂"
+    }
+  },
+  {
+    "id": "free_food_joke",
+    "keywords": [
+      "free ka khana",
+      "sirf khane aaye"
+    ],
+    "answers": {
+      "default": "Shaadi ka khana sabke liye hota hai 😄",
+      "elder": "Mehmaan bhagwan hote hain 😊",
+      "friend": "Khana toh highlight hai 😄",
+      "sibling": "Sach bol diya 😂"
+    }
+  },
+  {
+    "id": "dance_joke",
+    "keywords": [
+      "dance nahi aata",
+      "naachna nahi"
+    ],
+    "answers": {
+      "default": "Enjoy karna zaroori hai, perfect steps nahi 😊",
+      "elder": "Khushi se jhoomna hi kaafi hai 😊",
+      "friend": "Bas move kar 😄",
+      "sibling": "Naagin step easy hai 😂"
+    }
+  },
+  {
+    "id": "steal_shoes",
+    "keywords": [
+      "joota chupai",
+      "shoes churaye"
+    ],
+    "answers": {
+      "default": "Joota chupai tradition fun hota hai 😄",
+      "elder": "Rasam ka hissa hai 😊",
+      "friend": "Negotiation strong hogi 😄",
+      "sibling": "Paise dene padenge 😂"
+    }
+  },
+  {
+    "id": "food_pack",
+    "keywords": [
+      "khana pack",
+      "ghar le jaye"
+    ],
+    "answers": {
+      "default": "Enjoy fresh at venue 😊",
+      "elder": "Yahin enjoy karein 😊",
+      "friend": "Dil mein pack kar 😄",
+      "sibling": "Tiffin laaya kya 😂"
+    }
+  },
+  {
+    "id": "how_much_spent",
+    "keywords": [
+      "kitna kharcha",
+      "budget kya"
+    ],
+    "answers": {
+      "default": "Memories priceless hoti hain 😊",
+      "elder": "Khushi sabse badi hoti hai 😊",
+      "friend": "Big fat wedding 😄",
+      "sibling": "Income tax mat bula 😂"
+    }
+  },
+  {
+    "id": "ai_dancing",
+    "keywords": [
+      "ai dance",
+      "tum dance karte"
+    ],
+    "answers": {
+      "default": "Main virtual dance karta hoon 😄",
+      "elder": "Main digital sahayak hoon 😊",
+      "friend": "Main DJ control karta 😄",
+      "sibling": "Robot dance 😂"
+    }
+  },
+  {
+    "id": "best_dressed",
+    "keywords": [
+      "best dressed",
+      "kaun best lag raha"
+    ],
+    "answers": {
+      "default": "Aaj sab best dressed hain ✨",
+      "elder": "Sab sundar lag rahe hain 😊",
+      "friend": "Competition tough hai 😄",
+      "sibling": "Main hi hoon 😂"
+    }
+  },
+  {
+    "id": "secret_joke",
+    "keywords": [
+      "secret batao",
+      "raaz batao"
+    ],
+    "answers": {
+      "default": "Wedding secrets safe rehte hain 😉",
+      "elder": "Raaz raaz hi rehte hain 😊",
+      "friend": "Confidential 😄",
+      "sibling": "Blackmail material 😂"
+    }
+  },
+  {
+    "id": "funny_joke",
+    "keywords": [
+      "joke sunao",
+      "mazaak"
+    ],
+    "answers": {
+      "default": "Shaadi ka diet rule: calories count nahi hoti 😄",
+      "elder": "Khushi sabse badi dawa hai 😊",
+      "friend": "Dulha dance kare toh DJ famous 😄",
+      "sibling": "Gulab jamun unlimited 😂"
+    }
+  },
+  {
+    "id": "ai_savage_1",
+    "keywords": [
+      "tum cute ho",
+      "ai cute"
+    ],
+    "answers": {
+      "default": "Shaadi ka glow hai… warna main toh code hoon 😌",
+      "elder": "Aapki nazar achhi hai 😊",
+      "friend": "Cute toh main hoon hi 😌",
+      "sibling": "AI hoon, filter built-in hai 😂"
+    }
+  },
+  {
+    "id": "ai_savage_2",
+    "keywords": [
+      "single ho"
+    ],
+    "answers": {
+      "default": "Main single nahi, server se committed hoon 😌",
+      "elder": "Main digital sahayak hoon 😊",
+      "friend": "Single hoon par available nahi 😄",
+      "sibling": "Rishta leke aaya kya 😂"
+    }
+  },
+  {
+    "id": "ai_savage_3",
+    "keywords": [
+      "number do"
+    ],
+    "answers": {
+      "default": "Number nahi, directions milengi 😌",
+      "elder": "Main sirf sahayata ke liye hoon 😊",
+      "friend": "Number nahi, location bhejta hoon 😄",
+      "sibling": "CID lag raha hai kya 😂"
+    }
+  },
+  {
+    "id": "us_2",
+    "keywords": [
+      "khana kab",
+      "food kab"
+    ],
+    "answers": {
+      "default": "Shaadi mein sabko khane ki hi padi hoti hai 😄 Jaldi open hoga.",
+      "elder": "Khana jaldi serve hoga 😊",
+      "friend": "Plate ready rakh 😌",
+      "sibling": "Line mein pehle lagna 😂"
+    }
+  },
+  {
+    "id": "us_3",
+    "keywords": [
+      "free ka khana"
+    ],
+    "answers": {
+      "default": "Shaadi ka khana free nahi, blessings ke saath aata hai 😌",
+      "elder": "Mehmaan bhagwan hote hain 😊",
+      "friend": "Sab isi mission pe hain 😄",
+      "sibling": "Sach bol diya tune 😂"
+    }
+  },
+  {
+    "id": "us_4",
+    "keywords": [
+      "dance nahi aata"
+    ],
+    "answers": {
+      "default": "Yahan talent nahi, confidence chalta hai 😌",
+      "elder": "Khushi se jhoomna kaafi hai 😊",
+      "friend": "Bas hil ja, koi judge nahi karega 😄",
+      "sibling": "Naagin step sabko aata 😂"
+    }
+  },
+  {
+    "id": "us_5",
+    "keywords": [
+      "single ho"
+    ],
+    "answers": {
+      "default": "Shaadi mein single log hi zyada active hote hain 😌",
+      "elder": "Sabka samay aata hai 😊",
+      "friend": "Single but dangerous 😄",
+      "sibling": "Shaadi se wapas couple ban ke jayega 😂"
+    }
+  },
+  {
+    "id": "us_6",
+    "keywords": [
+      "crush mil gaya"
+    ],
+    "answers": {
+      "default": "Shaadi crush factory hoti hai 😌",
+      "elder": "Young log milte hain shaadi mein 😊",
+      "friend": "Story shuru ho gayi lagta 😄",
+      "sibling": "Invite ka full use 😂"
+    }
+  },
+  {
+    "id": "us_7",
+    "keywords": [
+      "kitna kharcha",
+      "budget"
+    ],
+    "answers": {
+      "default": "Itna ki Google bhi calculate na kare 😌",
+      "elder": "Khushi sabse badi hoti hai 😊",
+      "friend": "Big fat wedding 😄",
+      "sibling": "Income tax mat bula 😂"
+    }
+  },
+  {
+    "id": "us_9",
+    "keywords": [
+      "late ho gaye"
+    ],
+    "answers": {
+      "default": "Indian wedding mein on-time aana suspicious hota hai 😌",
+      "elder": "Aapka swagat hai 😊",
+      "friend": "Hero entry 😄",
+      "sibling": "Abhi bhi time pe ho 😂"
+    }
+  },
+  {
+    "id": "us_10",
+    "keywords": [
+      "thak gaya"
+    ],
+    "answers": {
+      "default": "Shaadi marathon hoti hai, sprint nahi 😌",
+      "elder": "Aaram kar lijiye 😊",
+      "friend": "Energy drink le 😄",
+      "sibling": "Abhi toh start hai 😂"
+    }
+  },
+  {
+    "id": "us_11",
+    "keywords": [
+      "kitna khaya"
+    ],
+    "answers": {
+      "default": "Shaadi mein calories count nahi hoti 😌",
+      "elder": "Shaadi ka khana special hota hai 😊",
+      "friend": "Diet kal se 😄",
+      "sibling": "Round 2 ready 😂"
+    }
+  },
+  {
+    "id": "us_12",
+    "keywords": [
+      "wifi password"
+    ],
+    "answers": {
+      "default": "Shaadi enjoy karo, WiFi baad mein 😌",
+      "elder": "Details mil jayegi 😊",
+      "friend": "Reels baad mein 😄",
+      "sibling": "Network se zyada connection bana 😂"
+    }
+  },
+  {
+    "id": "us_14",
+    "keywords": [
+      "ghar jana"
+    ],
+    "answers": {
+      "default": "Itni jaldi escape plan? 😌",
+      "elder": "Safe travel 😊",
+      "friend": "After party miss karega 😄",
+      "sibling": "Dil nahi bhara 😂"
+    }
+  },
+  {
+    "id": "us_15",
+    "keywords": [
+      "maza nahi aa raha"
+    ],
+    "answers": {
+      "default": "Maza lene ka effort bhi karna padta hai 😌",
+      "elder": "Abhi aur programs hain 😊",
+      "friend": "Dance floor ja 😄",
+      "sibling": "Mood khud banana padta 😂"
+    }
+  },
+  {
+    "id": "ai_savage_4",
+    "keywords": [
+      "date pe chalo"
+    ],
+    "answers": {
+      "default": "Aaj couple ki date chal rahi hai 😌",
+      "elder": "Aaj unka din hai 😊",
+      "friend": "Third wheel nahi banta 😄",
+      "sibling": "Queue mein lag 😂"
+    }
+  },
+  {
+    "id": "ai_savage_5",
+    "keywords": [
+      "love you"
+    ],
+    "answers": {
+      "default": "Aaj pyaar un dono ke naam 😌",
+      "elder": "Unki jodi bani rahe 😊",
+      "friend": "Love spread ho raha 😄",
+      "sibling": "Emotional damage 😂"
+    }
+  },
+  {
+    "id": "ai_savage_6",
+    "keywords": [
+      "kiss",
+      "pappi"
+    ],
+    "answers": {
+      "default": "Aaj blessings hi allowed hain 😌",
+      "elder": "Aashirwad sabse bada 😊",
+      "friend": "Flying kiss acceptable 😄",
+      "sibling": "Control Uday 😂"
+    }
+  },
+  {
+    "id": "ai_savage_7",
+    "keywords": [
+      "shaadi karogi"
+    ],
+    "answers": {
+      "default": "Already ek shaadi manage kar rahi hoon 😌",
+      "elder": "Aaj unka din hai 😊",
+      "friend": "Applications closed 😄",
+      "sibling": "Form bhar ke aao 😂"
+    }
+  },
+  {
+    "id": "ai_savage_8",
+    "keywords": [
+      "sexy",
+      "hot lag rahi"
+    ],
+    "answers": {
+      "default": "Shaadi outfits ka kamaal hai 😌",
+      "elder": "Sab festive lag rahe 😊",
+      "friend": "Wedding glow real hai 😄",
+      "sibling": "Camera angle hoga 😂"
+    }
+  },
+  {
+    "id": "ai_savage_9",
+    "keywords": [
+      "crush hai"
+    ],
+    "answers": {
+      "default": "Shaadi crush stories famous hoti hain 😌",
+      "elder": "Khushi ka mahaul hai 😊",
+      "friend": "Shaadi = crush season 😄",
+      "sibling": "Love story loading 😂"
+    }
+  },
+  {
+    "id": "ai_savage_10",
+    "keywords": [
+      "propose karu"
+    ],
+    "answers": {
+      "default": "Shaadi se better backdrop nahi milega 😌",
+      "elder": "Soch samajh kar 😊",
+      "friend": "Filmy moment bana 😄",
+      "sibling": "Ring ready hai? 😂"
+    }
+  },
+  {
+    "id": "ai_savage_11",
+    "keywords": [
+      "hug chahiye"
+    ],
+    "answers": {
+      "default": "Virtual hug delivered 😌",
+      "elder": "Khushi ka ashirwad 😊",
+      "friend": "Group hug 😄",
+      "sibling": "Side hug hi milega 😂"
+    }
+  },
+  {
+    "id": "ai_savage_12",
+    "keywords": [
+      "yaad aaogi"
+    ],
+    "answers": {
+      "default": "Shaadi yaad rahi toh main bhi 😌",
+      "elder": "Yaadein hi khaas hoti 😊",
+      "friend": "Photos dekh lena 😄",
+      "sibling": "Memory card bhar jayega 😂"
+    }
+  }
+]
