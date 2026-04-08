@@ -78,7 +78,7 @@ This project is optimized for deployment on **Render** as a Web Service.
 
 ## 📝 Authors
 
-- **Naveen Gupta** & The Antigravity AI Team
+- **Naveen Gupta** 
 
 ---
 
