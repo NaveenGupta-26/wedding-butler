@@ -2,10 +2,10 @@
     "venue": "Royal Pepper Resort",
     "city": "Jaipur",
     "events": {
-        "mehendi": "2026-02-18T12:00:00",
-        "sangeet": "2026-02-18T19:00:00",
-        "haldi": "2026-02-19T11:30:00",
-        "wedding": "2026-02-19T20:00:00"
+        "mehendi": "2026-05-18T12:00:00",
+        "sangeet": "2026-05-18T19:00:00",
+        "haldi": "2026-05-19T11:30:00",
+        "wedding": "2026-05-19T20:00:00"
     },
     "quietHours": {
         "start": 23,

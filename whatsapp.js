@@ -93,7 +93,7 @@ const client = new Client({
     }),
     puppeteer: {
         headless: true,
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium',
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
@@ -175,10 +175,27 @@ client.on('message', async (message) => {
         }
 
         // 2. GUEST-ONLY GUARD: Strict check against Guest List
-        const guest = dataManager.getGuestByPhone(phone);
+        let guest = dataManager.getGuestByPhone(phone);
+        const TRIAL_MODE = process.env.TRIAL_MODE !== 'false'; // Default to true unless explicitly disabled
+
         if (!guest) {
-            console.log(`[WHATSAPP-PRIVACY] Ignoring message from unknown number: ${phone}`);
-            return;
+            if (TRIAL_MODE) {
+                console.log(`[WHATSAPP-AUTH] Trial Mode: Auto-registering ${phone}`);
+                guest = {
+                    id: `g_trial_${phone.replace(/\D/g, '')}`,
+                    name: `Guest (${phone.slice(-4)})`,
+                    phone: `+${phone}`,
+                    relation: 'Trial Tester',
+                    category: 'friend',
+                    side: 'Both',
+                    isTrial: true,
+                    lifecycleStage: 'arrived'
+                };
+                await dataManager.addGuest(guest);
+            } else {
+                console.log(`[WHATSAPP-PRIVACY] Ignoring message from unknown number: ${phone}`);
+                return;
+            }
         }
 
         console.log(`[WHATSAPP] Authorized msg from ${guest.name}: "${text}"`);
@@ -220,7 +237,7 @@ client.on('message', async (message) => {
             type: 'incoming',
             timestamp: new Date().toLocaleTimeString()
         };
-        dataManager.addChatMessage(guest.id, guestMsgObj);
+        await dataManager.addChatMessage(guest.id, guestMsgObj);
 
         if (module.exports.onMessageReceived) {
             module.exports.onMessageReceived({
@@ -253,7 +270,7 @@ client.on('message', async (message) => {
             console.log(`[WHATSAPP] Replied to ${guest.name} ✅`);
 
             // Save AI reply to history
-            dataManager.addChatMessage(guest.id, {
+            await dataManager.addChatMessage(guest.id, {
                 sender: 'The Wedding Butler',
                 text: finalOutput,
                 type: 'outgoing',
@@ -282,7 +299,7 @@ async function broadcastMessage(text, targetPhones = null) {
                 await client.sendMessage(chatId, personalizedMsg);
 
                 // Save to history
-                dataManager.addChatMessage(guest.id, {
+                await dataManager.addChatMessage(guest.id, {
                     sender: 'The Wedding Butler',
                     text: personalizedMsg,
                     type: 'outgoing',

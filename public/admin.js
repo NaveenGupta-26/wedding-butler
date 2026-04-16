@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         div.onclick = () => selectGuest(g.id, g.name);
         div.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h4 style="margin:0;">${sanitizeHTML(g.name)} ${g.isVIP ? '⭐' : ''}</h4>
+            <h4 style="margin:0;">${sanitizeHTML(g.name)} ${g.isVIP ? '⭐' : ''} ${g.isTrial ? '<span style="color: #25d366; font-size: 10px;">(Trial)</span>' : ''}</h4>
             <span style="font-size: 10px; background: var(--royal-gold-muted); color: var(--royal-gold-dark); padding: 2px 5px; border-radius: 4px;">${sanitizeHTML(g.side || 'Groom')}</span>
         </div>
         <span style="font-size: 11px; color: var(--text-muted);">${sanitizeHTML(g.phone)} | ${sanitizeHTML(g.relation || 'Guest')}</span>
@@ -846,23 +846,6 @@ async function refreshAnalytics() {
         
     } catch (e) {
         console.error("Analytics refresh failed:", e);
-    }
-}
-
-// --- B14: WhatsApp Reconnect ---
-async function reconnectWhatsApp() {
-    if (!confirm("Are you sure you want to restart the WhatsApp connection?")) return;
-    try {
-        const res = await fetch('/api/admin/reconnect-whatsapp', { method: 'POST' });
-        const data = await res.json();
-        if (data.success) {
-            alert("Reconnection process started. QR code will appear shortly.");
-            document.getElementById('whatsapp-status').innerText = "Status: Reconnecting...";
-        } else {
-            alert("Error: " + data.message);
-        }
-    } catch (e) {
-        alert("Failed to reach server.");
     }
 }
 

@@ -10,6 +10,18 @@ const schedule = require('node-schedule');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
+// PostgreSQL Connection Context
+const DATABASE_URL = process.env.DATABASE_URL;
+if (DATABASE_URL) {
+    console.log('[DB] DATABASE_URL found. PostgreSQL will be used for persistence.');
+} else {
+    console.warn('[DB] ⚠️ No DATABASE_URL found. Falling back to local JSON storage.');
+}
+
+// Global Config
+const TRIAL_MODE = process.env.TRIAL_MODE === 'true' || true; // Using true by default as requested
+if (TRIAL_MODE) console.log('[CONFIG] 🧪 TRIAL MODE is ENABLED. Non-guests can test the butler.');
+
 // Ensure data directory exists
 const dataDir = path.join(__dirname, 'data');
 if (!fs.existsSync(dataDir)) {
@@ -111,11 +123,13 @@ whatsappButler.setStatusCallback((status) => {
     io.to('host_room').emit('whatsapp_status', { status });
 });
 
-deliveryService.init(io, whatsappButler);
-// Set initial mode from an environment variable or default to manual
-schedulerService.setMode(process.env.PROACTIVE_MODE || 'manual');
+// Initialize Data
+dataManager.init().then(() => {
+    console.log('[DATA] DataManager ready.');
+    whatsappButler.client.initialize();
+});
 
-whatsappButler.client.initialize();
+// Register WhatsApp typing callback
 
 // Register WhatsApp typing callback
 whatsappButler.onTyping = (data) => {
@@ -187,6 +201,16 @@ app.get('/api/whatsapp-status', async (req, res) => {
     }
 });
 
+// Debug endpoint (Public during troubleshooting)
+app.get('/debug-state', (req, res) => {
+    res.json({
+        dbConnected: dataManager.isDBConnected,
+        guestCount: dataManager.getGuests().length,
+        chatKeys: Object.keys(dataManager.getChats()),
+        guestIds: dataManager.getGuests().map(g => g.id)
+    });
+});
+
 // --- OTP STORAGE ---
 const otpStore = new Map(); // phone -> { otp, expires }
 const OTP_EXPIRY_MINUTES = 5;
@@ -215,14 +239,29 @@ app.post('/api/login', otpLimiter, async (req, res) => {
     console.log(`[AUTH] Normalized phone: ${phone}`);
 
     // Find guest by phone
-    const guest = dataManager.getGuests().find(g => {
+    let guest = dataManager.getGuests().find(g => {
         const match = phonesMatch(g.phone, phone);
         if (match) console.log(`[AUTH] Match found for guest: ${g.name} (${g.phone})`);
         return match;
     });
 
     if (!guest) {
-        return res.status(404).json({ success: false, message: "Phone number not found in Guest List." });
+        if (TRIAL_MODE) {
+            console.log(`[AUTH] Creating TRIAL GUEST for ${phone}`);
+            guest = {
+                id: `g_trial_${phone.replace(/\D/g, '')}`,
+                name: `Guest (${phone.slice(-4)})`,
+                phone: phone,
+                relation: 'Trial Tester',
+                category: 'friend',
+                side: 'Both',
+                isTrial: true,
+                lifecycleStage: 'arrived'
+            };
+            await dataManager.addGuest(guest);
+        } else {
+            return res.status(404).json({ success: false, message: "Phone number not found in Guest List." });
+        }
     }
 
     const otp = generateOTP();
@@ -301,6 +340,56 @@ app.post('/api/login-password', async (req, res) => {
     }
 });
 
+app.get('/api/login-demo', async (req, res) => {
+    console.log(`[API] GET /api/login-demo hit`);
+    
+    const demoPhone = '+910000000000';
+    // Use exact phone match to avoid false positives with phonesMatch endsWith logic
+    let guest = dataManager.getGuests().find(g => g.phone === demoPhone);
+
+    if (!guest) {
+        console.log(`[AUTH] Creating DEMO TRIAL GUEST`);
+        guest = {
+            id: `g_demo_${Date.now()}`,
+            name: `Trial Guest`,
+            phone: demoPhone,
+            relation: 'Trial Tester',
+            category: 'elder',
+            side: 'Both',
+            language_preference: 'elder',
+            isTrial: true,
+            lifecycleStage: 'arrived'
+        };
+        await dataManager.addGuest(guest);
+    } else {
+        // Ensure properties are correct even if guest exists
+        guest.name = 'Trial Guest';
+        guest.category = 'elder';
+        guest.language_preference = 'elder';
+        guest.isTrial = true;
+        await dataManager.updateGuest(guest.id, { 
+            name: 'Trial Guest', 
+            category: 'elder', 
+            language_preference: 'elder', 
+            isTrial: true 
+        });
+    }
+
+    console.log(`[AUTH] Demo Login SUCCESS for ${guest.name} ✅`);
+
+    res.json({
+        success: true,
+        guest: {
+            id: guest.id,
+            name: guest.name,
+            phone: guest.phone,
+            side: guest.side,
+            category: guest.category,
+            language_preference: guest.language_preference
+        }
+    });
+});
+
 app.post('/api/verify', (req, res) => {
     let { phone, otp } = req.body;
 
@@ -343,6 +432,14 @@ app.get('/api/wedding-context', (req, res) => {
     }
 });
 
+app.get('/api/config', (req, res) => {
+    // Returns full wedding config and events list
+    res.json({
+        config: dataManager.getConfig(),
+        events: dataManager.getEvents()
+    });
+});
+
 app.post('/api/wedding-context', isAdmin, (req, res) => {
     try {
         const contextPath = path.join(__dirname, 'data', 'weddingContext.json');
@@ -362,7 +459,7 @@ app.post('/api/wedding-context', isAdmin, (req, res) => {
 
 
 
-app.post('/api/add-guest', isAdmin, (req, res) => {
+app.post('/api/add-guest', isAdmin, async (req, res) => {
     let { name, phone, relation, category, side, hotel, isVIP } = req.body;
     if (!name || !phone) {
         return res.json({ success: false, message: "Name and Phone required" });
@@ -383,7 +480,7 @@ app.post('/api/add-guest', isAdmin, (req, res) => {
         isVIP: !!isVIP
     };
 
-    dataManager.addGuest(newGuest);
+    await dataManager.addGuest(newGuest);
     res.json({ success: true, guest: newGuest });
 });
 
@@ -413,9 +510,9 @@ app.post('/api/admin/send-proactive', isAdmin, (req, res) => {
 });
 
 
-app.post('/api/delete-guest', isAdmin, (req, res) => {
+app.post('/api/delete-guest', isAdmin, async (req, res) => {
     const { id } = req.body;
-    dataManager.deleteGuest(id);
+    await dataManager.deleteGuest(id);
     res.json({ success: true });
 });
 
@@ -451,18 +548,18 @@ app.get('/api/my-chats/:phone', (req, res) => {
     res.json(chats);
 });
 
-app.post('/api/chats/clear/:guestId', isAdmin, (req, res) => {
-    dataManager.clearChatsForGuest(req.params.guestId);
+app.post('/api/chats/clear/:guestId', isAdmin, async (req, res) => {
+    await dataManager.clearChatsForGuest(req.params.guestId);
     res.json({ success: true, message: "Chat history cleared" });
 });
 
-app.post('/api/chats/clear-all', isAdmin, (req, res) => {
-    dataManager.clearAllChats();
+app.post('/api/chats/clear-all', isAdmin, async (req, res) => {
+    await dataManager.clearAllChats();
     res.json({ success: true, message: "All chat histories cleared" });
 });
 
 // Guest-side: Clear own chat
-app.post('/api/my-chats/clear', (req, res) => {
+app.post('/api/my-chats/clear', async (req, res) => {
     console.log(`[API] POST /api/my-chats/clear hit`);
     const { phone } = req.body;
     if (!phone) return res.status(400).json({ success: false, message: "Phone required" });
@@ -477,13 +574,13 @@ app.post('/api/my-chats/clear', (req, res) => {
         return res.status(404).json({ success: false, message: "Guest not found" });
     }
 
-    dataManager.clearChatsForGuest(guest.id);
+    await dataManager.clearChatsForGuest(guest.id);
     console.log(`[API] Chat cleared for guest: ${guest.name} (${guest.id})`);
     res.json({ success: true, message: "Chat cleared" });
 });
 
 // Guest-side: Delete specific messages
-app.post('/api/my-chats/delete', (req, res) => {
+app.post('/api/my-chats/delete', async (req, res) => {
     console.log(`[API] POST /api/my-chats/delete hit`);
     const { phone, messageIds } = req.body;
     if (!phone || !messageIds) return res.status(400).json({ success: false, message: "Phone and messageIds required" });
@@ -494,7 +591,7 @@ app.post('/api/my-chats/delete', (req, res) => {
     const guest = dataManager.getGuestByPhone(finalPhone);
     if (!guest) return res.status(404).json({ success: false, message: "Guest not found" });
 
-    dataManager.deleteMessages(guest.id, messageIds);
+    await dataManager.deleteMessages(guest.id, messageIds);
     res.json({ success: true, message: "Messages deleted" });
 });
 
@@ -562,7 +659,7 @@ io.on('connection', (socket) => {
                 io.to(`guest_${guest.id}`).emit('receive_message', msgObj);
 
                 // Save to persistence
-                dataManager.addChatMessage(guest.id, msgObj);
+                await dataManager.addChatMessage(guest.id, msgObj);
 
                 // Feedback to Host
                 io.to('host_room').emit('delivery_status', {
@@ -588,7 +685,7 @@ io.on('connection', (socket) => {
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         };
         io.to(`guest_${guestId}`).emit('receive_message', msgObj);
-        dataManager.addChatMessage(guestId, msgObj);
+        await dataManager.addChatMessage(guestId, msgObj);
 
         // Also send via WhatsApp so guest gets it on their phone
         const guest = dataManager.getGuestById(guestId);
@@ -624,7 +721,7 @@ io.on('connection', (socket) => {
             type: 'incoming',
             timestamp: new Date().toLocaleTimeString()
         };
-        dataManager.addChatMessage(guest.id, guestMsgObj);
+        await dataManager.addChatMessage(guest.id, guestMsgObj);
 
         io.to('host_room').emit('guest_activity', {
             guestId: guest.id,
@@ -635,8 +732,7 @@ io.on('connection', (socket) => {
 
         // --- LIFECYCLE TRIGGER: Arrived ---
         if (guest.lifecycleStage === 'invited') {
-            guest.lifecycleStage = 'arrived';
-            dataManager.saveGuests?.();
+            await dataManager.updateGuest(guest.id, { lifecycleStage: 'arrived' });
             console.log(`[LIFECYCLE] ${guest.name} marked as ARRIVED`);
         }
 
@@ -651,7 +747,7 @@ io.on('connection', (socket) => {
             console.log("[SERVER] AI Response Object:", aiResult);
 
             if (aiResult && aiResult.text) {
-                setTimeout(() => {
+                setTimeout(async () => {
                     try {
                         // Stop typing indicator right before showing message
                         console.log(`[SERVER] Emitting butler_typing STOP for guest_${guest.id}`);
@@ -665,7 +761,7 @@ io.on('connection', (socket) => {
                             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                         };
 
-                        dataManager.addChatMessage(guest.id, aiMsgObj);
+                        await dataManager.addChatMessage(guest.id, aiMsgObj);
                         io.to(`guest_${guest.id}`).emit('receive_message', aiMsgObj);
 
                         // Log AI response to host
@@ -696,7 +792,7 @@ io.on('connection', (socket) => {
                 }, 1000);
             } else {
                 console.warn("[SERVER] AI returned empty text!");
-                setTimeout(() => {
+                setTimeout(async () => {
                     io.to(`guest_${guest.id}`).emit('butler_typing', { typing: false });
                     io.to('host_room').emit('butler_typing', { guestId: guest.id, typing: false });
 
@@ -707,7 +803,7 @@ io.on('connection', (socket) => {
                         timestamp: new Date().toLocaleTimeString()
                     };
                     io.to(`guest_${guest.id}`).emit('receive_message', msg);
-                    dataManager.addChatMessage(guest.id, msg);
+                    await dataManager.addChatMessage(guest.id, msg);
                 }, 1000);
             }
         } catch (err) {
@@ -723,7 +819,7 @@ io.on('connection', (socket) => {
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             };
             io.to(`guest_${guest.id}`).emit('receive_message', crashMsg);
-            dataManager.addChatMessage(guest.id, crashMsg);
+            await dataManager.addChatMessage(guest.id, crashMsg);
         }
     });
 
@@ -759,7 +855,7 @@ server.listen(PORT, () => {
 
 
 
-app.post('/api/update-guest', isAdmin, (req, res) => {
+app.post('/api/update-guest', isAdmin, async (req, res) => {
     let { id, name, phone, relation, category, side, hotel, isVIP, engagementLevel, lifecycleStage } = req.body;
     if (!id) {
         return res.json({ success: false, message: "Guest ID required" });
@@ -770,27 +866,16 @@ app.post('/api/update-guest', isAdmin, (req, res) => {
         phone = normalizePhone(phone);
     }
 
-    const guests = dataManager.getGuests();
-    const guest = guests.find(g => g.id === id);
+    const success = await dataManager.updateGuest(id, { 
+        name, phone, relation, category, side, hotel, isVIP, engagementLevel, lifecycleStage 
+    });
 
-    if (!guest) {
-        return res.json({ success: false, message: "Guest not found" });
+    if (success) {
+        const updatedGuest = dataManager.getGuestById(id);
+        res.json({ success: true, guest: updatedGuest });
+    } else {
+        res.status(404).json({ success: false, message: "Guest not found" });
     }
-
-    // Update only provided fields
-    if (name) guest.name = name;
-    if (phone) guest.phone = phone;
-    if (relation) guest.relation = relation;
-    if (category) guest.category = category;
-    if (side !== undefined) guest.side = side;
-    if (hotel !== undefined) guest.hotel = hotel;
-    if (isVIP !== undefined) guest.isVIP = !!isVIP;
-    if (engagementLevel) guest.engagementLevel = engagementLevel;
-    if (lifecycleStage) guest.lifecycleStage = lifecycleStage;
-
-    dataManager.saveGuests?.(); // safe if method exists
-
-    res.json({ success: true, guest });
 });
 
 app.get('/api/unknown', isAdmin, (req, res) => {
@@ -982,7 +1067,7 @@ app.get('/api/admin/registration-requests', isAdmin, (req, res) => {
     res.json(loadRegRequests().filter(r => r.status === 'pending'));
 });
 
-app.post('/api/admin/approve-registration', isAdmin, (req, res) => {
+app.post('/api/admin/approve-registration', isAdmin, async (req, res) => {
     const { id } = req.body;
     const reqs = loadRegRequests();
     const rIndex = reqs.findIndex(x => x.id === id);
@@ -991,7 +1076,7 @@ app.post('/api/admin/approve-registration', isAdmin, (req, res) => {
         const r = reqs[rIndex];
 
         // Add to guests.json
-        dataManager.addGuest({
+        await dataManager.addGuest({
             id: `g_${Date.now()}`,
             name: r.name,
             phone: r.phone,
@@ -1018,7 +1103,7 @@ app.post('/api/admin/approve-registration', isAdmin, (req, res) => {
         // 3. Log to guest chat history
         const guestObj = dataManager.getGuestByPhone(r.phone);
         if (guestObj) {
-            dataManager.addChatMessage(guestObj.id, {
+            await dataManager.addChatMessage(guestObj.id, {
                 sender: 'The Wedding Butler',
                 text: welcomeMsg,
                 type: 'outgoing',
@@ -1147,11 +1232,11 @@ app.post('/api/admin/kb/delete', isAdmin, (req, res) => {
     }
 });
 
-app.post('/api/rsvp', (req, res) => {
+app.post('/api/rsvp', async (req, res) => {
     const { guestId, attendance, foodPreference } = req.body;
     if (!guestId) return res.status(400).json({ success: false, message: "Guest ID required" });
 
-    const success = dataManager.updateGuest(guestId, { 
+    const success = await dataManager.updateGuest(guestId, { 
         rsvpStatus: attendance, 
         foodPreference: foodPreference || 'None',
         rsvpTimestamp: new Date().toISOString()
@@ -1174,35 +1259,48 @@ app.post('/api/rsvp', (req, res) => {
 // --- B15: AUTOMATED EVENT BROADCASTS ---
 const sentAlerts = new Set(); // To prevent duplicate alerts per process run
 
-setInterval(() => {
-    const config = dataManager.getConfig();
-    const events = dataManager.getEvents();
-    const guests = dataManager.getGuests();
-    const now = new Date();
+setInterval(async () => {
+    try {
+        const config = dataManager.getConfig();
+        const events = dataManager.getEvents();
+        const guests = dataManager.getGuests();
+        const now = new Date();
 
-    events.forEach(event => {
-        const eventTime = new Date(`${event.date} ${event.time}`);
-        const diffMinutes = Math.round((eventTime - now) / 60000);
-        
-        // Alert 30 minutes before event
-        const alertId = `${event.id}_30min`;
-        if (diffMinutes === 30 && !sentAlerts.has(alertId)) {
-            console.log(`[BROADCAST] Auto-alert for event: ${event.name}`);
-            sentAlerts.add(alertId);
+        for (const event of events) {
+            const eventTime = new Date(`${event.date} ${event.time}`);
+            const diffMinutes = Math.round((eventTime - now) / 60000);
+            
+            // Alert 30 minutes before event
+            const alertId = `${event.id}_30min`;
+            if (diffMinutes === 30 && !sentAlerts.has(alertId)) {
+                console.log(`[BROADCAST] Auto-alert for event: ${event.name}`);
+                sentAlerts.add(alertId);
 
-            const broadcastText = `✨ *Upcoming Event Alert!* ✨\n\n*${event.name}* is starting in 30 minutes at *${event.location}*! 🎊\n\nWe look forward to seeing you there! 🙏\n\n_— Your Wedding Butler_`;
+                const broadcastText = `✨ *Upcoming Event Alert!* ✨\n\n*${event.name}* is starting in 30 minutes at *${event.location}*! 🎊\n\nWe look forward to seeing you there! 🙏\n\n_— Your Wedding Butler_`;
 
-            guests.forEach(g => {
-                if (g.phone) {
-                    const chatId = g.phone.replace('+', '') + "@c.us";
-                    whatsappButler.client.sendMessage(chatId, broadcastText).catch(e => {
-                        console.error(`[BROADCAST] Failed for ${g.name}:`, e.message);
-                    });
+                for (const g of guests) {
+                    if (g.phone) {
+                        const chatId = g.phone.replace('+', '') + "@c.us";
+                        whatsappButler.client.sendMessage(chatId, broadcastText).catch(e => {
+                            console.error(`[BROADCAST] Failed for ${g.name}:`, e.message);
+                        });
+
+                        // Save to history
+                        await dataManager.addChatMessage(g.id, {
+                            sender: 'The Wedding Butler',
+                            text: broadcastText,
+                            type: 'outgoing',
+                            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                        });
+                    }
                 }
-            });
+            }
         }
-    });
+    } catch (err) {
+        console.error('[BROADCAST] Auto-broadcast check error:', err.message);
+    }
 }, 60000); // Check every minute
+
 
 // --- GRACEFUL SHUTDOWN ---
 process.on('SIGINT', async () => {
@@ -1210,6 +1308,7 @@ process.on('SIGINT', async () => {
     try {
         schedulerService.stop();
         dataManager.flushWrites();
+        await dataManager.close(); 
         await whatsappButler.client.destroy().catch(() => {});
         server.close();
         console.log('[SHUTDOWN] Cleanup complete. Goodbye!');

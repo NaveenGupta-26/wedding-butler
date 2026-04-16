@@ -76,6 +76,23 @@ async function loginWithPassword() {
     }
 }
 
+async function loginAsDemo() {
+    try {
+        const res = await fetch('/api/login-demo');
+        const data = await res.json();
+
+        if (data.success) {
+            currentUser = data.guest;
+            localStorage.setItem('wedding_butler_guest', JSON.stringify(currentUser));
+            showChatApp();
+        } else {
+            alert(data.message || "Demo login failed.");
+        }
+    } catch (e) {
+        alert("Demo login failed. Check your connection.");
+    }
+}
+
 async function verifyOtp() {
     let phone = document.getElementById('phone-input').value.trim();
     // Re-apply prefix for verification

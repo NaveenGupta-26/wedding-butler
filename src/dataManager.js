@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { Pool } = require('pg');
 
 const DATA_PATH = path.join(__dirname, '../data/initialData.json');
 const GUESTS_PATH = path.join(__dirname, '../data/guests.json');
@@ -8,38 +9,174 @@ const MEMORY_PATH = path.join(__dirname, '../data/guestMemory.json');
 
 class DataManager {
     constructor() {
+        this.data = { config: {}, events: [] };
+        this.guests = [];
+        this.chats = {};
+        this.guestMemory = {};
+        this.db = null;
+        this.isDBConnected = false;
+
+        // Debounce timers for JSON fallback
+        this._chatWriteTimer = null;
+        this._guestWriteTimer = null;
+        this._memoryWriteTimer = null;
+        this._WRITE_DELAY = 2000;
+    }
+
+    async init() {
+        console.log('[DATA] Initializing DataManager...');
+        
+        // 1. Initial Load from JSON (Legacy/Fallback)
         this.data = this.loadInitialData();
         this.guests = this.loadGuests();
         this.chats = this.loadChats();
         this.guestMemory = this.loadGuestMemory();
 
-        // Debounce timers for write operations
-        this._chatWriteTimer = null;
-        this._guestWriteTimer = null;
-        this._memoryWriteTimer = null;
-        this._WRITE_DELAY = 2000; // 2 second debounce
+        // 2. Connect to PostgreSQL if DATABASE_URL is present
+        if (process.env.DATABASE_URL) {
+            try {
+                this.db = new Pool({
+                    connectionString: process.env.DATABASE_URL,
+                    ssl: { rejectUnauthorized: false } // Required for Render
+                });
+                
+                // Test connection
+                await this.db.query('SELECT NOW()');
+                console.log('[DATA] Connected to PostgreSQL ✅');
+                
+                await this.ensureTables();
+                await this.syncWithPostgres();
+                this.isDBConnected = true;
+            } catch (e) {
+                console.error("[DATA] PostgreSQL Connection/Sync Failed:", e.message);
+                this.db = null;
+            }
+        }
     }
 
-    // ---------- LOADERS ----------
+    async ensureTables() {
+        console.log('[DATA] Ensuring SQL tables exist...');
+        const queries = [
+            `CREATE TABLE IF NOT EXISTS guests (
+                id TEXT PRIMARY KEY,
+                name TEXT,
+                phone TEXT,
+                relation TEXT,
+                category TEXT,
+                side TEXT,
+                hotel TEXT,
+                is_vip BOOLEAN DEFAULT FALSE,
+                is_trial BOOLEAN DEFAULT FALSE,
+                language_preference TEXT DEFAULT 'hinglish_polite',
+                engagement_level TEXT,
+                lifecycle_stage TEXT DEFAULT 'invited',
+                rsvp_status TEXT,
+                food_preference TEXT,
+                rsvp_timestamp TIMESTAMP,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )`,
+            `CREATE TABLE IF NOT EXISTS chats (
+                guest_id TEXT PRIMARY KEY,
+                messages JSONB DEFAULT '[]'::jsonb,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )`,
+            `CREATE TABLE IF NOT EXISTS config (
+                key TEXT PRIMARY KEY,
+                data JSONB,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )`
+        ];
+
+        for (const q of queries) {
+            await this.db.query(q);
+        }
+    }
+
+    async syncWithPostgres() {
+        console.log('[DATA] Syncing with PostgreSQL...');
+
+        // --- GUESTS ---
+        const { rows: dbGuests } = await this.db.query('SELECT * FROM guests');
+        if (dbGuests.length > 0) {
+            this.guests = dbGuests.map(g => ({
+                ...g,
+                isVIP: g.is_vip,
+                isTrial: g.is_trial,
+                language_preference: g.language_preference,
+                engagementLevel: g.engagement_level,
+                lifecycleStage: g.lifecycle_stage,
+                rsvpStatus: g.rsvp_status,
+                foodPreference: g.food_preference,
+                rsvpTimestamp: g.rsvp_timestamp
+            }));
+            console.log(`[DATA] Loaded ${this.guests.length} guests from PostgreSQL. (IDs: ${this.guests.map(g=>g.id).join(', ')})`);
+        } else if (this.guests.length > 0) {
+            // MIGRATION: JSON -> DB
+            console.log('[DATA] Migrating guests from JSON to PostgreSQL...');
+            for (const g of this.guests) {
+                await this.db.query(
+                    `INSERT INTO guests (id, name, phone, relation, category, side, hotel, is_vip, is_trial, lifecycle_stage)
+                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+                     ON CONFLICT (id) DO NOTHING`,
+                    [g.id, g.name, g.phone, g.relation, g.category, g.side, g.hotel, !!g.isVIP, !!g.isTrial, g.lifecycleStage || 'invited']
+                );
+            }
+        }
+
+        // --- CONFIG ---
+        const { rows: dbConfig } = await this.db.query('SELECT * FROM config WHERE key = $1', ['wedding_config']);
+        if (dbConfig.length > 0) {
+            const payload = dbConfig[0].data;
+            this.data = { config: payload.config, events: payload.events };
+            console.log('[DATA] Loaded Config & Events from PostgreSQL.');
+        } else if (this.data.config.groomName) {
+            // MIGRATION
+            console.log('[DATA] Migrating Config from JSON to PostgreSQL...');
+            await this.db.query(
+                `INSERT INTO config (key, data) VALUES ($1, $2) ON CONFLICT (key) DO UPDATE SET data = $2`,
+                ['wedding_config', { config: this.data.config, events: this.data.events }]
+            );
+        }
+
+        // --- CHATS ---
+        const { rows: dbChats } = await this.db.query('SELECT * FROM chats');
+        if (dbChats.length > 0) {
+            dbChats.forEach(c => {
+                this.chats[c.guest_id] = c.messages;
+            });
+            console.log(`[DATA] Loaded chats for ${dbChats.length} guests from PostgreSQL. (Keys: ${Object.keys(this.chats).join(', ')})`);
+        } else if (Object.keys(this.chats).length > 0) {
+            // MIGRATION
+            console.log('[DATA] 🛠 Migrating chats from JSON to PostgreSQL...');
+            for (const guestId of Object.keys(this.chats)) {
+                await this.db.query(
+                    `INSERT INTO chats (guest_id, messages) VALUES ($1, $2) ON CONFLICT (guest_id) DO UPDATE SET messages = $2`,
+                    [guestId, JSON.stringify(this.chats[guestId])]
+                );
+            }
+            console.log(`[DATA] Successfully migrated ${Object.keys(this.chats).length} chats.`);
+        } else {
+            console.log('[DATA] No chats found in SQL or JSON.');
+        }
+    }
+
+    // ---------- LOADERS (JSON Fallback) ----------
     loadInitialData() {
         try {
+            if (!fs.existsSync(DATA_PATH)) return { config: {}, events: [] };
             const raw = fs.readFileSync(DATA_PATH);
             return JSON.parse(raw);
-        } catch (err) {
-            console.error("Error loading initialData.json:", err);
-            return { config: {}, events: [] };
-        }
+        } catch (err) { return { config: {}, events: [] }; }
     }
 
     loadGuests() {
         try {
             if (!fs.existsSync(GUESTS_PATH)) return [];
             const raw = fs.readFileSync(GUESTS_PATH);
-            return JSON.parse(raw);
-        } catch (err) {
-            console.error("Error loading guests.json:", err);
-            return [];
-        }
+            const data = JSON.parse(raw);
+            return Array.isArray(data) ? data : [];
+        } catch (err) { return []; }
     }
 
     loadChats() {
@@ -47,10 +184,7 @@ class DataManager {
             if (!fs.existsSync(CHATS_PATH)) return {};
             const raw = fs.readFileSync(CHATS_PATH);
             return JSON.parse(raw);
-        } catch (err) {
-            console.error("Error loading chats.json:", err);
-            return {};
-        }
+        } catch (err) { return {}; }
     }
 
     loadGuestMemory() {
@@ -58,49 +192,31 @@ class DataManager {
             if (!fs.existsSync(MEMORY_PATH)) return {};
             const raw = fs.readFileSync(MEMORY_PATH);
             return JSON.parse(raw);
-        } catch (err) {
-            console.error("Error loading guestMemory.json:", err);
-            return {};
-        }
+        } catch (err) { return {}; }
     }
 
-    // ---------- DEBOUNCED WRITERS ----------
+    // ---------- WRITERS ----------
     saveGuests() {
         clearTimeout(this._guestWriteTimer);
         this._guestWriteTimer = setTimeout(() => {
-            try {
-                fs.writeFileSync(GUESTS_PATH, JSON.stringify(this.guests, null, 2));
-            } catch (e) {
-                console.error("[DATA] Error writing guests.json:", e.message);
-            }
+            try { fs.writeFileSync(GUESTS_PATH, JSON.stringify(this.guests, null, 2)); } catch (e) {}
         }, this._WRITE_DELAY);
     }
 
     saveChats() {
         clearTimeout(this._chatWriteTimer);
         this._chatWriteTimer = setTimeout(() => {
-            try {
-                fs.writeFileSync(CHATS_PATH, JSON.stringify(this.chats, null, 2));
-            } catch (e) {
-                console.error("[DATA] Error writing chats.json:", e.message);
-            }
+            try { fs.writeFileSync(CHATS_PATH, JSON.stringify(this.chats, null, 2)); } catch (e) {}
         }, this._WRITE_DELAY);
     }
 
     saveGuestMemory() {
         clearTimeout(this._memoryWriteTimer);
         this._memoryWriteTimer = setTimeout(() => {
-            try {
-                fs.writeFileSync(MEMORY_PATH, JSON.stringify(this.guestMemory, null, 2));
-            } catch (e) {
-                console.error("[DATA] Error writing guestMemory.json:", e.message);
-            }
+            try { fs.writeFileSync(MEMORY_PATH, JSON.stringify(this.guestMemory, null, 2)); } catch (e) {}
         }, this._WRITE_DELAY);
     }
 
-    /**
-     * Flush all pending writes immediately (for graceful shutdown).
-     */
     flushWrites() {
         clearTimeout(this._chatWriteTimer);
         clearTimeout(this._guestWriteTimer);
@@ -109,26 +225,6 @@ class DataManager {
         try { fs.writeFileSync(CHATS_PATH, JSON.stringify(this.chats, null, 2)); } catch (e) {}
         try { fs.writeFileSync(MEMORY_PATH, JSON.stringify(this.guestMemory, null, 2)); } catch (e) {}
         console.log("[DATA] All pending writes flushed to disk.");
-    }
-
-    // ---------- CONFIG & EVENTS ----------
-    getChats() {
-        return this.chats || {};
-    }
-
-    getConfig() {
-        return this.data.config || {};
-    }
-
-    getEvents() {
-        return this.data.events || [];
-    }
-
-    /**
-     * Reload config and events from disk (call when admin updates settings).
-     */
-    reloadData() {
-        this.data = this.loadInitialData();
     }
 
     // ---------- GUESTS ----------
@@ -149,35 +245,156 @@ class DataManager {
         });
     }
 
-    addGuest(guest) {
+    async addGuest(guest) {
         this.guests.push(guest);
         this.saveGuests();
+        console.log(`[DATA] Attempting to save new guest to SQL: ${guest.name} (${guest.id})`);
+        if (this.db) {
+            try {
+                await this.db.query(
+                    `INSERT INTO guests (id, name, phone, relation, category, side, hotel, is_vip, is_trial, lifecycle_stage, language_preference)
+                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+                    [guest.id, guest.name, guest.phone, guest.relation, guest.category, guest.side, guest.hotel, !!guest.isVIP, !!guest.isTrial, guest.lifecycleStage || 'invited', guest.language_preference || 'hinglish_polite']
+                );
+                console.log(`[DATA] SQL: Guest ${guest.id} saved successfully.`);
+            } catch (e) { console.error("[SQL] Add Guest Error:", e.message); }
+        } else {
+            console.warn('[DATA] ⚠️ SQL Database not connected. Guest saved to local JSON only.');
+        }
     }
 
-    updateGuest(id, updates) {
+    async updateGuest(id, updates) {
         const guest = this.guests.find(g => g.id === id);
         if (guest) {
             Object.assign(guest, updates);
             this.saveGuests();
+            if (this.db) {
+                try {
+                    // Note: This is an abbreviated update for specific fields. 
+                    // In a production app, we would build a dynamic query.
+                    await this.db.query(
+                        `UPDATE guests SET 
+                            name = COALESCE($2, name), 
+                            phone = COALESCE($3, phone),
+                            relation = COALESCE($4, relation),
+                            category = COALESCE($5, category),
+                            lifecycle_stage = COALESCE($6, lifecycle_stage),
+                            is_vip = COALESCE($7, is_vip),
+                            language_preference = COALESCE($8, language_preference),
+                            is_trial = COALESCE($9, is_trial),
+                            rsvp_status = COALESCE($10, rsvp_status),
+                            food_preference = COALESCE($11, food_preference),
+                            rsvp_timestamp = COALESCE($12, rsvp_timestamp),
+                            engagement_level = COALESCE($13, engagement_level),
+                            side = COALESCE($14, side),
+                            hotel = COALESCE($15, hotel),
+                            updated_at = NOW()
+                         WHERE id = $1`,
+                        [id, updates.name, updates.phone, updates.relation, updates.category, updates.lifecycleStage, updates.isVIP, updates.language_preference, updates.isTrial, updates.rsvpStatus, updates.foodPreference, updates.rsvpTimestamp, updates.engagementLevel, updates.side, updates.hotel]
+                    );
+                } catch (e) { console.error("[SQL] Update Guest Error:", e.message); }
+            }
             return true;
         }
         return false;
     }
 
-    deleteGuest(id) {
+    async deleteGuest(id) {
         this.guests = this.guests.filter(g => g.id !== id);
         this.saveGuests();
+        if (this.db) {
+            try {
+                await this.db.query('DELETE FROM guests WHERE id = $1', [id]);
+                await this.db.query('DELETE FROM chats WHERE guest_id = $1', [id]);
+            } catch (e) { console.error("[SQL] Delete Guest Error:", e.message); }
+        }
+    }
+
+    // ---------- CONFIG & EVENTS ----------
+    getConfig() { return this.data.config || {}; }
+    getEvents() { return this.data.events || []; }
+
+    // ---------- CHATS ----------
+    getChats() {
+        return this.chats || {};
+    }
+
+    getChatsByGuestId(guestId) {
+        return this.chats[guestId] || [];
+    }
+
+    async addChatMessage(guestId, message) {
+        if (!this.chats[guestId]) this.chats[guestId] = [];
+        if (!message.id) message.id = `msg_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+        if (!message.timestamp) message.timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        this.chats[guestId].push(message);
+        this.saveChats();
+
+        if (this.db) {
+            try {
+                await this.db.query(
+                    `INSERT INTO chats (guest_id, messages) VALUES ($1, $2)
+                     ON CONFLICT (guest_id) DO UPDATE SET messages = $2, updated_at = NOW()`,
+                    [guestId, JSON.stringify(this.chats[guestId])]
+                );
+                console.log(`[DATA] SQL: Logged message for guest ${guestId}`);
+            } catch (e) { console.error("[SQL] Add Chat Error:", e.message); }
+        }
+    }
+
+    async clearChatsForGuest(guestId) {
+        // ALWAYS clear memory if it exists
+        if (this.chats[guestId]) {
+            delete this.chats[guestId];
+            this.saveChats();
+        }
+        
+        // ALWAYS attempt to clear DB if connected
+        if (this.db) {
+            try { 
+                await this.db.query('DELETE FROM chats WHERE guest_id = $1', [guestId]); 
+                console.log(`[DATA] SQL: Chat history cleared for guest ${guestId}`);
+            } catch (e) { 
+                console.error(`[SQL] Clear Chat Error for ${guestId}:`, e.message); 
+            }
+        }
+    }
+
+    async clearAllChats() {
+        this.chats = {};
+        this.saveChats();
+        if (this.db) {
+            try { 
+                await this.db.query('DELETE FROM chats'); 
+                console.log("[DATA] SQL: All chat histories cleared.");
+            } catch (e) { 
+                console.error("[SQL] Clear All Chats Error:", e.message); 
+            }
+        }
+    }
+
+    async deleteMessages(guestId, messageIds) {
+        if (!this.chats[guestId]) return;
+        
+        this.chats[guestId] = this.chats[guestId].filter(m => !messageIds.includes(m.id));
+        this.saveChats();
+
+        if (this.db) {
+            try {
+                await this.db.query(
+                    `UPDATE chats SET messages = $2, updated_at = NOW() WHERE guest_id = $1`,
+                    [guestId, JSON.stringify(this.chats[guestId])]
+                );
+                console.log(`[DATA] SQL: Deleted ${messageIds.length} messages for guest ${guestId}`);
+            } catch (e) { console.error("[SQL] Delete Messages Error:", e.message); }
+        }
     }
 
     // ---------- GUEST MEMORY ----------
     getGuestMemory(guestId) {
         if (!this.guestMemory[guestId]) {
-            this.guestMemory[guestId] = {
-                lastTopic: null,
-                lastQuestion: null,
-                repeatCount: 0,
-                mood: "neutral"
-            };
+            this.guestMemory[guestId] = { lastTopic: null, lastQuestion: null, repeatCount: 0, mood: "neutral" };
         }
         return this.guestMemory[guestId];
     }
@@ -190,41 +407,11 @@ class DataManager {
         this.saveGuestMemory();
     }
 
-    // ---------- CHATS ----------
-    getChatsByGuestId(guestId) {
-        return this.chats[guestId] || [];
-    }
-
-    addChatMessage(guestId, message) {
-        if (!this.chats[guestId]) this.chats[guestId] = [];
-        // Ensure message has unique ID
-        if (!message.id) {
-            message.id = `msg_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+    async close() {
+        if (this.db) {
+            await this.db.end();
+            console.log('[DATA] PostgreSQL connection pool closed.');
         }
-        // Ensure message has timestamp
-        if (!message.timestamp) {
-            message.timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        }
-        this.chats[guestId].push(message);
-        this.saveChats(); // debounced — won't block for every single message
-    }
-
-    deleteMessages(guestId, messageIds) {
-        if (!this.chats[guestId]) return;
-        this.chats[guestId] = this.chats[guestId].filter(msg => !messageIds.includes(msg.id));
-        this.saveChats();
-    }
-
-    clearChatsForGuest(guestId) {
-        if (this.chats[guestId]) {
-            delete this.chats[guestId];
-            this.saveChats();
-        }
-    }
-
-    clearAllChats() {
-        this.chats = {};
-        this.saveChats();
     }
 }
 
