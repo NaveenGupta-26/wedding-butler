@@ -1,4 +1,4 @@
-const CACHE_NAME = 'wedding-butler-v2';
+const CACHE_NAME = 'wedding-butler-v3';
 const ASSETS = [
   '/',
   '/index.html',

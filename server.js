@@ -97,6 +97,15 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use((req, res, next) => {
+    if (req.url === '/sw.js') {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+    }
+    next();
+});
+
 app.use(express.static(path.join(__dirname, 'public'), {
     // Block direct access to admin files via static middleware
     setHeaders: (res, filePath) => {},
