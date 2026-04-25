@@ -1,5 +1,7 @@
 const express = require('express');
 const http = require('http');
+const https = require('https');
+
 const socketIo = require('socket.io');
 const path = require('path');
 const cors = require('cors');
@@ -218,6 +220,11 @@ app.get('/debug-state', (req, res) => {
         chatKeys: Object.keys(dataManager.getChats()),
         guestIds: dataManager.getGuests().map(g => g.id)
     });
+});
+
+// Keep-alive endpoint for Render
+app.get('/keep-alive', (req, res) => {
+    res.status(200).send('OK');
 });
 
 // --- OTP STORAGE ---
@@ -860,7 +867,23 @@ server.listen(PORT, () => {
         console.log(`>>> ADMIN PANEL: http://localhost:${PORT}/admin-login.html`);
         console.log(`>>> Guest App:  http://localhost:${PORT}/index.html\n`);
     }
+
+    // Self-ping logic to prevent Render sleep (Free Tier)
+    const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || 'https://wedding-butler.onrender.com';
+    setInterval(() => {
+        console.log(`[KEEP-ALIVE] Pinging self at ${PUBLIC_URL}/keep-alive...`);
+        const lib = PUBLIC_URL.startsWith('https') ? https : http;
+        lib.get(`${PUBLIC_URL}/keep-alive`, (res) => {
+            // Keep it quiet unless there's an error or we're debugging
+            if (res.statusCode !== 200) {
+                console.warn(`[KEEP-ALIVE] Unexpected status: ${res.statusCode}`);
+            }
+        }).on('error', (err) => {
+            console.error(`[KEEP-ALIVE] Ping failed: ${err.message}`);
+        });
+    }, 10 * 60 * 1000); // Every 10 minutes
 });
+
 
 
 
