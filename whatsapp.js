@@ -100,7 +100,12 @@ const client = new Client({
             '--disable-gpu',
             '--no-zygote',
             '--disable-dev-shm-usage',
-            '--disable-extensions'
+            '--disable-extensions',
+            '--disable-setuid-sandbox',
+            '--js-flags="--max-old-space-size=256"',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--single-process'
         ]
     }
 });
@@ -307,6 +312,8 @@ async function broadcastMessage(text, targetPhones = null) {
                 });
 
                 sentCount++;
+                // Add a small delay to avoid memory spikes and rate limiting
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
         } catch (e) {
             console.error(`[WHATSAPP] Failed to send broadcast to ${guest.name}:`, e.message);

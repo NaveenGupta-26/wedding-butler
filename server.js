@@ -544,13 +544,13 @@ app.post('/api/train', isAdmin, (req, res) => {
 });
 
 // --- CHAT HISTORY & MANAGEMENT ---
-app.get('/api/chats/:guestId', isAdmin, (req, res) => {
-    const chats = dataManager.getChatsByGuestId(req.params.guestId);
+app.get('/api/chats/:guestId', isAdmin, async (req, res) => {
+    const chats = await dataManager.getChatsByGuestId(req.params.guestId);
     res.json(chats);
 });
 
 // Guest History Retrieval (used by index.html)
-app.get('/api/my-chats/:phone', (req, res) => {
+app.get('/api/my-chats/:phone', async (req, res) => {
     let { phone } = req.params;
     if (!phone) return res.json([]);
 
@@ -560,7 +560,7 @@ app.get('/api/my-chats/:phone', (req, res) => {
     const guest = dataManager.getGuestByPhone(phone);
     if (!guest) return res.json([]);
 
-    const chats = dataManager.getChatsByGuestId(guest.id);
+    const chats = await dataManager.getChatsByGuestId(guest.id);
     res.json(chats);
 });
 

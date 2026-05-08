@@ -62,7 +62,7 @@ class SchedulerService {
 
         console.log("[SCHEDULER] Checking for proactive opportunities...");
         const guests = dataManager.getGuests();
-        const logs = deliveryService.loadLogs();
+        const logs = await dataManager.loadProactiveLogs();
 
         for (const guest of guests) {
             const decision = intentEngine.getPriorityIntent(guest, logs);

@@ -346,7 +346,7 @@ class AIService {
         // 5. AI FULL-CONTEXT CALL (Primary intelligence — handles EVERYTHING)
         // ============================================
         // Fetch conversation history
-        const allChats = dataManager.getChatsByGuestId(guest.id);
+        const allChats = await dataManager.getChatsByGuestId(guest.id);
         const history = allChats.slice(-6).map(msg => ({
             sender: msg.sender === 'You' ? guest.name : 'The Wedding Butler',
             text: msg.text

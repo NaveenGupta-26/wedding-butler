@@ -85,6 +85,14 @@ class DataManager {
                 key TEXT PRIMARY KEY,
                 data JSONB,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )`,
+            `CREATE TABLE IF NOT EXISTS proactive_logs (
+                id TEXT PRIMARY KEY,
+                guest_id TEXT,
+                intent TEXT,
+                text TEXT,
+                status TEXT,
+                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )`
         ];
 
@@ -140,24 +148,22 @@ class DataManager {
         }
 
         // --- CHATS ---
-        const { rows: dbChats } = await this.db.query('SELECT * FROM chats');
-        if (dbChats.length > 0) {
-            dbChats.forEach(c => {
-                this.chats[c.guest_id] = c.messages;
-            });
-            console.log(`[DATA] Loaded chats for ${dbChats.length} guests from PostgreSQL. (Keys: ${Object.keys(this.chats).join(', ')})`);
-        } else if (Object.keys(this.chats).length > 0) {
-            // MIGRATION
-            console.log('[DATA] 🛠 Migrating chats from JSON to PostgreSQL...');
-            for (const guestId of Object.keys(this.chats)) {
-                await this.db.query(
-                    `INSERT INTO chats (guest_id, messages) VALUES ($1, $2) ON CONFLICT (guest_id) DO UPDATE SET messages = $2`,
-                    [guestId, JSON.stringify(this.chats[guestId])]
-                );
+        // Optimization: Do NOT load all chats into memory on startup.
+        // They will be loaded on-demand in getChatsByGuestId.
+        console.log('[DATA] Chat sync: On-demand loading enabled (Memory Optimization).');
+        if (Object.keys(this.chats).length > 0 && this.db) {
+            // MIGRATION: If we have local chats but none in DB, migrate them.
+            const { rows: dbChatCount } = await this.db.query('SELECT count(*) FROM chats');
+            if (parseInt(dbChatCount[0].count) === 0) {
+                console.log('[DATA] 🛠 Migrating chats from JSON to PostgreSQL...');
+                for (const guestId of Object.keys(this.chats)) {
+                    await this.db.query(
+                        `INSERT INTO chats (guest_id, messages) VALUES ($1, $2) ON CONFLICT (guest_id) DO UPDATE SET messages = $2`,
+                        [guestId, JSON.stringify(this.chats[guestId])]
+                    );
+                }
+                console.log(`[DATA] Successfully migrated ${Object.keys(this.chats).length} chats.`);
             }
-            console.log(`[DATA] Successfully migrated ${Object.keys(this.chats).length} chats.`);
-        } else {
-            console.log('[DATA] No chats found in SQL or JSON.');
         }
     }
 
@@ -319,7 +325,18 @@ class DataManager {
         return this.chats || {};
     }
 
-    getChatsByGuestId(guestId) {
+    async getChatsByGuestId(guestId) {
+        if (this.chats[guestId]) return this.chats[guestId];
+
+        if (this.db) {
+            try {
+                const { rows } = await this.db.query('SELECT messages FROM chats WHERE guest_id = $1', [guestId]);
+                if (rows.length > 0) {
+                    this.chats[guestId] = rows[0].messages;
+                    return this.chats[guestId];
+                }
+            } catch (e) { console.error("[SQL] Get Chat Error:", e.message); }
+        }
         return this.chats[guestId] || [];
     }
 
@@ -405,6 +422,40 @@ class DataManager {
         }
         Object.assign(this.guestMemory[guestId], updates);
         this.saveGuestMemory();
+    }
+
+    // ---------- PROACTIVE LOGS ----------
+    async saveProactiveLog(log) {
+        if (this.db) {
+            try {
+                await this.db.query(
+                    `INSERT INTO proactive_logs (id, guest_id, intent, text, status, timestamp)
+                     VALUES ($1, $2, $3, $4, $5, $6)
+                     ON CONFLICT (id) DO NOTHING`,
+                    [log.id, log.guestId, log.intent, log.text, log.status, log.timestamp || new Date().toISOString()]
+                );
+            } catch (e) { console.error("[SQL] Save Proactive Log Error:", e.message); }
+        }
+    }
+
+    async isProactiveDuplicate(id) {
+        if (this.db) {
+            try {
+                const { rows } = await this.db.query('SELECT id FROM proactive_logs WHERE id = $1', [id]);
+                return rows.length > 0;
+            } catch (e) { console.error("[SQL] Check Duplicate Error:", e.message); return false; }
+        }
+        return false;
+    }
+
+    async loadProactiveLogs() {
+        if (this.db) {
+            try {
+                const { rows } = await this.db.query('SELECT * FROM proactive_logs ORDER BY timestamp DESC LIMIT 100');
+                return rows;
+            } catch (e) { console.error("[SQL] Load Proactive Logs Error:", e.message); return []; }
+        }
+        return [];
     }
 
     async close() {

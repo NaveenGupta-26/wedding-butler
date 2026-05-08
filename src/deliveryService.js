@@ -13,33 +13,12 @@ class DeliveryService {
         this.whatsapp = whatsapp;
     }
 
-    loadLogs() {
-        try {
-            if (fs.existsSync(PROACTIVE_LOG_PATH)) {
-                return JSON.parse(fs.readFileSync(PROACTIVE_LOG_PATH));
-            }
-            return [];
-        } catch (e) {
-            console.error("Error loading proactive logs:", e);
-            return [];
-        }
-    }
 
-    saveLog(log) {
-        const logs = this.loadLogs();
-        logs.push(log);
-        fs.writeFileSync(PROACTIVE_LOG_PATH, JSON.stringify(logs, null, 2));
-    }
-
-    isDuplicate(id) {
-        const logs = this.loadLogs();
-        return logs.some(log => log.id === id);
-    }
 
     async sendProactiveMessage(guest, intent, text, eventTimestamp = 'now') {
         const idempotencyKey = `${guest.id}_${intent}_${eventTimestamp}`;
 
-        if (this.isDuplicate(idempotencyKey)) {
+        if (await dataManager.isProactiveDuplicate(idempotencyKey)) {
             console.log(`[DELIVERY] Duplicate detected for ${idempotencyKey}. Skipping.`);
             return { success: false, reason: 'duplicate' };
         }
@@ -86,14 +65,14 @@ class DeliveryService {
                 }
             }
 
-            this.saveLog(logEntry);
+            await dataManager.saveProactiveLog(logEntry);
             return { success: true, status: logEntry.status };
 
         } catch (error) {
             console.error("[DELIVERY] Error sending message:", error);
             logEntry.status = 'failed';
             logEntry.error = error.message;
-            this.saveLog(logEntry);
+            await dataManager.saveProactiveLog(logEntry);
             return { success: false, error: error.message };
         }
     }
